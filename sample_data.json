@@ -1,0 +1,37 @@
+{
+  "observations": [
+    {
+      "source": "satellite",
+      "signal": "Flood Detected",
+      "location": [22.5726, 88.3639],
+      "timestamp": "2026-07-25T01:00:00Z",
+      "confidence": 0.92
+    },
+    {
+      "source": "weather",
+      "signal": "Heavy Rain",
+      "location": [22.5730, 88.3641],
+      "timestamp": "2026-07-25T00:45:00Z",
+      "confidence": 0.88
+    },
+    {
+      "source": "user_report",
+      "signal": "Road Under Water",
+      "location": [22.5720, 88.3635],
+      "timestamp": "2026-07-25T01:05:00Z"
+    },
+    {
+      "source": "user_report",
+      "signal": "Road Under Water",
+      "location": [22.5722, 88.3636],
+      "timestamp": "2026-07-25T01:07:00Z"
+    },
+    {
+      "source": "news",
+      "signal": "Flood Confirmed",
+      "location": [22.5725, 88.3640],
+      "timestamp": "2026-07-25T01:10:00Z",
+      "confidence": 0.8
+    }
+  ]
+}
