@@ -13,7 +13,7 @@ a single weak report (should be Low).
 
 import json
 
-from ai.model import run_confidence_pipeline
+from ai.model import run_confidence_pipeline, run_multi_event_pipeline
 
 SCENARIOS = {
     "Strong agreement (flood)": [
@@ -38,3 +38,22 @@ if __name__ == "__main__":
         result = run_confidence_pipeline(raw_inputs)
         print(f"\n=== {name} ===")
         print(json.dumps(result.to_dict(), indent=2))
+
+    # --- Multi-event scenario ---
+    # A realistic live-feed batch: reports about a flood in Kolkata
+    # AND a wildfire near a completely different location, all mixed
+    # together in one incoming batch. The pipeline should split this
+    # into 2 separate events, not blend them into one confused score.
+    mixed_batch = [
+        # Kolkata flood cluster
+        {"source": "satellite", "signal": "Flood Detected", "location": [22.5726, 88.3639], "confidence": 0.9},
+        {"source": "weather", "signal": "Heavy Rain", "location": [22.5730, 88.3641], "confidence": 0.85},
+        {"source": "user_report", "signal": "Road Under Water", "location": [22.5720, 88.3635]},
+        # Wildfire cluster, ~300km away — should NOT merge with the flood
+        {"source": "satellite", "signal": "Wildfire Detected", "location": [23.2599, 87.8550], "confidence": 0.8},
+        {"source": "user_report", "signal": "Smoke Visible", "location": [23.2605, 87.8555]},
+    ]
+    multi_results = run_multi_event_pipeline(mixed_batch)
+    print(f"\n=== Multi-event batch (detected {len(multi_results)} separate events) ===")
+    for r in multi_results:
+        print(json.dumps(r.to_dict(), indent=2))

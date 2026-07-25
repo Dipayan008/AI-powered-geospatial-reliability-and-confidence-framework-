@@ -19,6 +19,7 @@ from .explanation import generate_explanation
 from .prediction import predict_alert
 from .preprocessing import preprocess
 from .reliability import classify_reliability
+from .clustering import cluster_observations
 from .utils import ConfidenceResult, SourceObservation
 
 
@@ -78,3 +79,33 @@ def run_confidence_pipeline(raw_inputs: List[Dict[str, Any]]) -> ConfidenceResul
         contributing_sources=contributing,
         conflicting_sources=conflicting,
     )
+
+
+def run_multi_event_pipeline(
+    raw_inputs: List[Dict[str, Any]],
+    radius_km: float = 5.0,
+    window_minutes: float = 120,
+) -> List[ConfidenceResult]:
+    """
+    Use this instead of run_confidence_pipeline when a single incoming
+    batch may contain reports about SEVERAL different, unrelated
+    events/locations at once (e.g. a flood in one district and a
+    wildfire in another, all reported in the same time window) — the
+    realistic case for a live monitoring feed rather than a
+    single-scenario demo.
+
+    It clusters raw_inputs by location + time proximity first, then
+    runs the full single-event pipeline independently on each cluster,
+    so events don't get blended into one confusing score.
+
+    Args:
+        raw_inputs: a mixed batch of raw observation dicts, potentially
+            spanning multiple real-world events.
+        radius_km: max distance between two reports to be treated as the same event.
+        window_minutes: max time gap between two reports to be treated as the same event.
+
+    Returns:
+        One ConfidenceResult per detected event cluster.
+    """
+    clusters = cluster_observations(raw_inputs, radius_km=radius_km, window_minutes=window_minutes)
+    return [run_confidence_pipeline(cluster) for cluster in clusters]

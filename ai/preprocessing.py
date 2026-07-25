@@ -17,17 +17,12 @@ from __future__ import annotations
 from typing import Any, Dict, List
 
 from .utils import SourceObservation, SourceType, infer_polarity, same_location
+from .weights_config import get_trust_weights
 
-# Default trust weights per source type. These can be tuned later, or
-# replaced with a learned per-source reliability score once you have
-# historical accuracy data for each feed.
-DEFAULT_TRUST_WEIGHTS: Dict[str, float] = {
-    SourceType.SATELLITE.value: 1.0,
-    SourceType.WEATHER.value: 0.9,
-    SourceType.OSM.value: 0.6,
-    SourceType.USER_REPORT.value: 0.5,
-    SourceType.NEWS.value: 0.7,
-}
+# Default trust weights per source type, with documented rationale in
+# weights_config.py. Kept as a module-level name here for backward
+# compatibility with any code importing DEFAULT_TRUST_WEIGHTS directly.
+DEFAULT_TRUST_WEIGHTS: Dict[str, float] = get_trust_weights()
 
 
 def _normalize_one(raw: Dict[str, Any], trust_weights: Dict[str, float]) -> SourceObservation | None:
