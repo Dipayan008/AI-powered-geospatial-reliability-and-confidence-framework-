@@ -1,0 +1,85 @@
+@import 'leaflet/dist/leaflet.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-command-bg: #12141C;
+  --color-command-obsidian: #181C24;
+  --color-command-surface: #191D26;
+  --color-command-panel: #1D212A;
+  --color-command-border: #2A303D;
+  --color-command-muted: #8E95A5;
+  --color-command-text: #F4F5F7;
+  --color-command-heading: #FFFFFF;
+
+  --color-cyber-purple: #38BDF8;
+  --color-cyber-neonViolet: #38BDF8;
+  --color-cyber-violet: #2563EB;
+  --color-cyber-deepPurple: #1E40AF;
+  --color-cyber-cyan: #38BDF8;
+  --color-cyber-emerald: #10B981;
+  --color-cyber-amber: #F59E0B;
+  --color-cyber-rose: #E05A32;
+  --color-cyber-blue: #38BDF8;
+
+  --font-mono: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--color-command-bg);
+  color: var(--color-command-text);
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Glassmorphism Panel Utilities - Clean & Professional */
+.glass-panel {
+  background: var(--color-command-panel);
+  border: 1px solid var(--color-command-border);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+}
+
+.glass-panel-accent {
+  background: var(--color-command-obsidian);
+  border: 1px solid var(--color-command-border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  border-radius: 12px;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-command-bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-command-border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-command-muted);
+}
+
+/* Leaflet Dark Map Overrides */
+.leaflet-container {
+  background: #14161B !important;
+  font-family: inherit;
+  z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--color-command-obsidian) !important;
+  color: #F4F5F7 !important;
+  border: 1px solid var(--color-command-border) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8) !important;
+  border-radius: 8px !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--color-command-obsidian) !important;
+  border: 1px solid var(--color-command-border) !important;
+}
+
