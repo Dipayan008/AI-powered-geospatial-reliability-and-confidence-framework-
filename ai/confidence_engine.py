@@ -18,23 +18,20 @@ from __future__ import annotations
 from typing import Dict, List, Tuple
 
 from .utils import SourceObservation, SourceType, clamp
+from .weights_config import get_base_points, get_scalar
 
 # Base points awarded when a source type confirms the event, scaled by
-# that source's trust weight (see preprocessing.DEFAULT_TRUST_WEIGHTS).
-BASE_POINTS: Dict[str, float] = {
-    SourceType.SATELLITE.value: 35,
-    SourceType.WEATHER.value: 25,
-    SourceType.OSM.value: 10,
-    SourceType.USER_REPORT.value: 15,
-    SourceType.NEWS.value: 20,
-}
+# that source's trust weight. Full rationale for these numbers lives in
+# weights_config.py — kept as a module-level name here for backward
+# compatibility.
+BASE_POINTS: Dict[str, float] = get_base_points()
 
 # Bonus for agreement between two or more independent, high-trust sources.
-AGREEMENT_BONUS = 10
+AGREEMENT_BONUS = get_scalar("agreement_bonus", 10)
 # Penalty applied per conflicting observation (a source reporting "no
 # event" or a contradicting signal for the same location).
-CONFLICT_PENALTY = 20
-MULTI_USER_REPORT_CAP = 20  # avoid many low-trust reports dominating the score
+CONFLICT_PENALTY = get_scalar("conflict_penalty", 20)
+MULTI_USER_REPORT_CAP = get_scalar("multi_user_report_cap", 20)  # avoid many low-trust reports dominating the score
 
 
 def _group_by_polarity(observations: List[SourceObservation]) -> Dict[str, List[SourceObservation]]:
