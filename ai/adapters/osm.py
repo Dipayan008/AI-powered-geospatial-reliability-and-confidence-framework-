@@ -22,6 +22,7 @@ from typing import Any, Dict, Optional
 import requests
 
 OVERPASS_URL = "https://overpass-api.de/api/interpreter"
+OVERPASS_MIRROR_URL = "https://overpass.openstreetmap.fr/api/interpreter"
 SEARCH_RADIUS_METERS = 500
 
 
@@ -43,7 +44,7 @@ def fetch_osm_observation(
     lat: float,
     lon: float,
     radius_m: int = SEARCH_RADIUS_METERS,
-    timeout: float = 15.0,
+    timeout: float = 25.0,
 ) -> Dict[str, Any]:
     """
     Returns a raw observation dict describing whether flood-relevant
@@ -53,9 +54,25 @@ def fetch_osm_observation(
          "location": [lat, lon], "timestamp": "..."}
     """
     query = _build_query(lat, lon, radius_m)
-    response = requests.post(OVERPASS_URL, data={"data": query}, timeout=timeout)
-    response.raise_for_status()
-    data = response.json()
+    headers = {"User-Agent": "GeoTrustAI-PS07-Hackathon/1.0"}
+
+    last_error: Optional[Exception] = None
+    for url in (OVERPASS_URL, OVERPASS_MIRROR_URL):
+        for attempt in range(2):  # try each endpoint twice before moving on
+            try:
+                response = requests.post(url, data={"data": query}, headers=headers, timeout=timeout)
+                response.raise_for_status()
+                data = response.json()
+                last_error = None
+                break
+            except requests.RequestException as exc:
+                last_error = exc
+                continue
+        if last_error is None:
+            break
+
+    if last_error is not None:
+        raise last_error
 
     elements = data.get("elements", [])
     has_waterway = any(

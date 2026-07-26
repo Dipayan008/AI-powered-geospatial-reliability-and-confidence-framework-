@@ -3,3 +3,5 @@ uvicorn[standard]
 pydantic
 google-generativeai
 requests
+rasterio
+numpy

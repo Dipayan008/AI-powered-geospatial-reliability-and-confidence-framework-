@@ -2,35 +2,35 @@
 adapters/sentinel.py
 ----------------------
 Fetches a water-index signal (NDWI, Normalized Difference Water Index)
-from Sentinel-2 imagery via the Copernicus Sentinel Hub API, and
-converts it into a raw observation dict.
+from Sentinel-2 imagery via the Copernicus Data Space Ecosystem's
+Sentinel Hub-compatible API, and converts it into a raw observation dict.
 
-HONEST NOTE UP FRONT: this is the heaviest of the 3 integrations by
-far. Satellite imagery isn't a simple REST GET like weather or OSM —
-it needs an authenticated account, an OAuth token, and a small
-"evalscript" telling Sentinel Hub what band math to run over the
-image. Budget real setup time for this one; if you're tight on time
-before the demo, it's reasonable to keep this on the mock/fallback
-path and be upfront with judges that satellite integration is the
-piece still being wired to a live account.
+IMPORTANT: use dataspace.copernicus.eu, NOT sentinel-hub.com directly.
+The commercial sentinel-hub.com site defaults to a 30-day paid trial.
+The Copernicus Data Space Ecosystem is the official ESA/EU portal and
+offers genuinely free API access (with usage quotas, no credit card)
+to the same underlying Sentinel Hub Process API — that's what this
+adapter is built against.
 
-Setup (one-time):
-  1. Create a free account at https://www.sentinel-hub.com/
-     (part of Copernicus Data Space Ecosystem)
-  2. In the dashboard, create an OAuth client -> get a Client ID and
-     Client Secret.
+Setup (one-time, free, no card required):
+  1. Register a free account at https://dataspace.copernicus.eu/
+  2. Log in, go to your user dashboard -> Sentinel Hub -> "Manage your
+     account" / OAuth clients section, and create an OAuth client.
+     Copy the Client ID and Client Secret it gives you.
   3. Set them as environment variables:
         PowerShell:  $env:SENTINELHUB_CLIENT_ID="..."
                      $env:SENTINELHUB_CLIENT_SECRET="..."
         bash:        export SENTINELHUB_CLIENT_ID="..."
                      export SENTINELHUB_CLIENT_SECRET="..."
+  4. pip install rasterio numpy (in addition to requirements.txt)
 
 What this returns: NDWI > ~0.3 over the queried area generally
 indicates standing water. This is a coarse proxy for "is there
 noticeably more surface water here than normal" — not a calibrated
-flood-detection model. Treat it as a starting point, not a finished
-detector; refining the NDWI threshold against real regional imagery
-is a good thing to mention as "future work" to judges.
+flood-detection model. Treat it as a starting point; refining the NDWI
+threshold against real regional imagery, or comparing against a
+recent historical baseline for the same location, is good "future
+work" to mention to judges.
 """
 
 from __future__ import annotations
@@ -40,8 +40,10 @@ from typing import Any, Dict, Optional
 
 import requests
 
-TOKEN_URL = "https://services.sentinel-hub.com/oauth/token"
-PROCESS_URL = "https://services.sentinel-hub.com/api/v1/process"
+# Copernicus Data Space Ecosystem endpoints (free tier) — NOT
+# services.sentinel-hub.com, which is the paid commercial product.
+TOKEN_URL = "https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token"
+PROCESS_URL = "https://sh.dataspace.copernicus.eu/process/v1"
 
 # Simple NDWI evalscript: (Green - NIR) / (Green + NIR), averaged over
 # the queried bounding box. B03 = green, B08 = near-infrared for Sentinel-2.
@@ -135,26 +137,33 @@ def fetch_sentinel_observation(
     )
     response.raise_for_status()
 
-    # The Process API returns a raw TIFF image (average NDWI per pixel).
-    # Computing a true pixel-average requires a TIFF/array reader
-    # (e.g. rasterio or PIL + numpy) which isn't a core dependency here
-    # to keep this adapter lightweight — see NOTE below.
-    #
-    # NOTE: to finish this, add `pip install rasterio numpy` and:
-    #   import rasterio, numpy as np, io
-    #   with rasterio.io.MemoryFile(response.content) as memfile:
-    #       with memfile.open() as dataset:
-    #           ndwi_array = dataset.read(1)
-    #   avg_ndwi = float(np.nanmean(ndwi_array))
-    #
-    # That avg_ndwi is what should replace the placeholder below.
-    raise NotImplementedError(
-        "Sentinel Hub request succeeded, but pixel decoding (TIFF -> NDWI "
-        "average) needs rasterio/numpy added — see the NOTE in this "
-        "function's source for the 4 lines to add. Left unfinished "
-        "deliberately since it adds two extra dependencies; wire it up "
-        "once you're ready to demo live imagery."
-    )
+    # The Process API returns a raw single-band TIFF (NDWI per pixel).
+    # Decode it and average across the queried area to get one number.
+    import io
+    import numpy as np
+    import rasterio
+
+    with rasterio.io.MemoryFile(response.content) as memfile:
+        with memfile.open() as dataset:
+            ndwi_array = dataset.read(1)
+
+    avg_ndwi = float(np.nanmean(ndwi_array))
+    signal = "flood_detected" if avg_ndwi >= NDWI_WATER_THRESHOLD else "no_flood_signal"
+
+    # Map how far above/below the threshold we are into a rough 0-1
+    # confidence — further from the threshold in either direction means
+    # a clearer (less ambiguous) reading.
+    distance_from_threshold = abs(avg_ndwi - NDWI_WATER_THRESHOLD)
+    confidence = min(0.95, 0.6 + distance_from_threshold)
+
+    return {
+        "source": "satellite",
+        "signal": signal,
+        "location": [lat, lon],
+        "timestamp": now.isoformat(),
+        "confidence": round(confidence, 2),
+        "raw": {"avg_ndwi": round(avg_ndwi, 4), "threshold": NDWI_WATER_THRESHOLD},
+    }
 
 
 def fetch_sentinel_observation_safe(lat: float, lon: float) -> Optional[Dict[str, Any]]:
