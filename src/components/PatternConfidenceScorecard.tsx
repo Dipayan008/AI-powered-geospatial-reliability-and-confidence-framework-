@@ -12,9 +12,9 @@ export const PatternConfidenceScorecard: React.FC<PatternConfidenceScorecardProp
   if (!selectedZone) return null;
 
   return (
-    <div className="glass-panel p-6 md:p-7 rounded-xl border border-[#2A303D] space-y-5 flex flex-col shadow-xl">
+    <div className="glass-panel p-6 md:p-7 rounded-xl border border-[#2A303D] space-y-4 flex flex-col shadow-xl">
       {/* Panel Header */}
-      <div className="flex items-center justify-between border-b border-[#2A303D] pb-4">
+      <div className="flex items-center justify-between border-b border-[#2A303D] pb-3">
         <div className="flex items-center space-x-2.5">
           <Target className="w-5 h-5 text-[#38BDF8]" />
           <h2 className="text-sm font-bold text-white font-mono uppercase tracking-wider">
@@ -24,7 +24,7 @@ export const PatternConfidenceScorecard: React.FC<PatternConfidenceScorecardProp
       </div>
 
       {/* High Danger Epicenter & Coordinates Box */}
-      <div className="bg-[#14161B] p-4 rounded-xl border border-[#E05A32]/50 space-y-3 font-mono">
+      <div className="bg-[#14161B] p-4 rounded-xl border border-[#E05A32]/50 space-y-2.5 font-mono">
         <div className="flex items-center justify-between flex-wrap gap-2">
           <span className="text-xs text-[#8E95A5] uppercase font-bold flex items-center gap-1.5">
             <Compass className="w-4 h-4 text-[#E05A32]" />
@@ -58,26 +58,26 @@ export const PatternConfidenceScorecard: React.FC<PatternConfidenceScorecardProp
       </div>
 
       {/* Pattern Confidence Score Widget */}
-      <div className="glass-panel-accent p-5 rounded-xl border border-[#2A303D] relative overflow-hidden text-center space-y-3">
+      <div className="glass-panel-accent p-4 rounded-xl border border-[#2A303D] relative overflow-hidden text-center space-y-2.5">
         <div className="text-xs font-mono text-[#8E95A5] uppercase tracking-widest">
           Pattern Match Confidence Score
         </div>
 
-        <div className="flex items-center justify-center space-x-4 my-1">
-          <div className="text-5xl font-extrabold font-mono tracking-tight text-white">
+        <div className="flex items-center justify-center space-x-4 my-0.5">
+          <div className="text-4xl font-extrabold font-mono tracking-tight text-white">
             {selectedZone.confidencePercentage}%
           </div>
           <div className="text-left font-mono">
-            <div className="text-sm font-bold uppercase text-[#38BDF8]">
+            <div className="text-xs font-bold uppercase text-[#38BDF8]">
               {selectedZone.confidencePercentage >= 85 ? 'HIGH MATCH' : 'STANDARD CORRELATION'}
             </div>
-            <div className="text-xs text-[#8E95A5]">
+            <div className="text-[11px] text-[#8E95A5]">
               Margin of Error: ± 2.1%
             </div>
           </div>
         </div>
 
-        <div className="w-full bg-[#12141C] h-3 rounded-full overflow-hidden border border-[#2A303D]">
+        <div className="w-full bg-[#12141C] h-2.5 rounded-full overflow-hidden border border-[#2A303D]">
           <div
             className="h-full bg-[#38BDF8] transition-all duration-700"
             style={{ width: `${selectedZone.confidencePercentage}%` }}
@@ -91,7 +91,7 @@ export const PatternConfidenceScorecard: React.FC<PatternConfidenceScorecardProp
 
       {/* Surrounding High-Density Social Gathering Places System */}
       {selectedZone.socialGatheringHotspots && selectedZone.socialGatheringHotspots.length > 0 && (
-        <div className="space-y-3 pt-3 border-t border-[#2A303D]">
+        <div className="space-y-2.5 pt-2 border-t border-[#2A303D]">
           <div className="flex items-center justify-between text-xs font-mono font-bold text-white uppercase flex-wrap gap-2">
             <span className="flex items-center gap-1.5 text-[#F59E0B]">
               <Users className="w-4 h-4" />
@@ -100,19 +100,19 @@ export const PatternConfidenceScorecard: React.FC<PatternConfidenceScorecardProp
             <span className="text-[#8E95A5] text-[11px]">HIGH DENSITY WARNING</span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {selectedZone.socialGatheringHotspots.map((hotspot) => (
-              <div key={hotspot.id} className="p-3.5 rounded-xl bg-[#14161B] border border-[#2A303D] space-y-2 font-mono text-xs">
+              <div key={hotspot.id} className="p-3 rounded-xl bg-[#14161B] border border-[#2A303D] space-y-1.5 font-mono text-xs">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span className="font-bold text-white block text-sm">{hotspot.name}</span>
-                    <span className="text-[#8E95A5] text-xs">{hotspot.category} • {hotspot.distanceKm} km from origin</span>
+                    <span className="font-bold text-white block text-xs">{hotspot.name}</span>
+                    <span className="text-[#8E95A5] text-[11px]">{hotspot.category} • {hotspot.distanceKm} km from origin</span>
                   </div>
                   <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#F59E0B]/20 text-[#F59E0B] border border-[#F59E0B]/40 uppercase flex-shrink-0">
                     {hotspot.peakCrowdEstimate}
                   </span>
                 </div>
-                <div className="text-[#8E95A5] text-xs leading-relaxed pt-1.5 border-t border-[#2A303D]/60">
+                <div className="text-[#8E95A5] text-[11px] leading-snug pt-1 border-t border-[#2A303D]/60">
                   <strong className="text-[#E05A32]">Directive:</strong> {hotspot.evacuationDirective}
                 </div>
               </div>
@@ -122,7 +122,7 @@ export const PatternConfidenceScorecard: React.FC<PatternConfidenceScorecardProp
       )}
 
       {/* Telemetry Metrics */}
-      <div className="space-y-3 pt-3 border-t border-[#2A303D]">
+      <div className="space-y-2.5 pt-2 border-t border-[#2A303D]">
         <div className="text-xs font-mono text-[#8E95A5] uppercase font-bold flex items-center justify-between">
           <span className="flex items-center gap-1.5">
             <BarChart3 className="w-4 h-4 text-[#38BDF8]" />
