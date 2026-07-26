@@ -58,14 +58,14 @@ def get_source(source_id: int, db: Session = Depends(get_db)):
 def generate_insight(title: str, summary: str, source_ids: List[int], db: Session = Depends(get_db)):
     """
     Take multiple source IDs covering the same event/location, score them,
-    and store the resulting insight. Currently uses placeholder scoring —
-    swap `ingestion.fake_ai_score` for Member 3's real AI model call.
+    and store the resulting insight. Now uses the real AI/ML confidence
+    engine (ai/model.py) via ingestion.real_ai_score.
     """
     sources = db.query(models.DataSource).filter(models.DataSource.id.in_(source_ids)).all()
     if not sources:
         raise HTTPException(status_code=404, detail="No matching sources found")
 
-    scores = ingestion.fake_ai_score([s.raw_content for s in sources])
+    scores = ingestion.real_ai_score(sources)
 
     insight = models.Insight(
         source_id=sources[0].id,
