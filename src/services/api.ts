@@ -297,7 +297,18 @@ export const INDIA_HAZARD_ZONES: HazardZone[] = [
 ];
 
 export async function fetchHazardZones(): Promise<HazardZone[]> {
-  return Promise.resolve(INDIA_HAZARD_ZONES);
+  const response = await fetch("http://127.0.0.1:8000/analyze-live");
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch hazard data");
+  }
+
+  const data = await response.json();
+
+  console.log(data);
+
+  // Keep returning the mock data for now so the UI doesn't break
+  return INDIA_HAZARD_ZONES;
 }
 
 export async function detectUserLocationAndCheckSurroundingHazards(): Promise<UserLocationHazardAssessment> {
