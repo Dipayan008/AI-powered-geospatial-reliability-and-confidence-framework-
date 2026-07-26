@@ -1,11 +1,26 @@
 """
 Simple data ingestion pipeline.
-Member 3 (AI/ML) will later replace `fake_ai_score()` with real model calls.
-This file's job (Member 2 / Backend) is just: collect -> clean -> store.
+This file's job (Member 2 / Backend) is: collect -> clean -> store,
+then hand sources to the AI/ML confidence engine (ai/model.py) for scoring.
 """
 
 from sqlalchemy.orm import Session
 import models
+
+# Try to use the real AI module (ai/model.py) if it's present in the repo.
+# Falls back to a simple placeholder if it isn't available yet (e.g. running
+# the backend folder standalone, outside the full repo).
+try:
+    from ai.model import run_confidence_pipeline
+    AI_AVAILABLE = True
+except ImportError:
+    AI_AVAILABLE = False
+
+try:
+    from ai.model import run_multi_event_pipeline
+    MULTI_EVENT_AVAILABLE = True
+except ImportError:
+    MULTI_EVENT_AVAILABLE = False
 
 
 def clean_text(text: str) -> str:
@@ -31,18 +46,39 @@ def ingest_source(db: Session, name: str, source_type: str, raw_content: str,
     return source
 
 
-def fake_ai_score(sources_text: list[str]) -> dict:
+def score_sources(sources: list[models.DataSource]) -> dict:
     """
-    Placeholder scoring logic so the backend/frontend can be built and demoed
-    before Member 3's real AI model is plugged in.
-    Replace this function's internals with the real call to the AI engine.
+    Send sources to the real AI confidence engine (ai/model.py) and normalize
+    its response into the shape the rest of the backend expects.
+    Falls back to a simple placeholder if the ai/ module isn't importable
+    (e.g. testing the backend folder on its own, before both are merged).
     """
-    # naive placeholder: more sources agreeing roughly in length/content = more "consistent"
-    count = len(sources_text)
+    if AI_AVAILABLE:
+        raw_observations = [
+            {
+                "source_type": s.source_type,
+                "content": s.raw_content,
+                "latitude": s.latitude,
+                "longitude": s.longitude,
+            }
+            for s in sources
+        ]
+        result = run_confidence_pipeline(raw_observations)
+        data = result.to_dict()
+        # Normalize AI module's output keys to what main.py expects
+        return {
+            "reliability_score": data.get("reliability_score", data.get("confidence_score", 0)),
+            "consistency_score": data.get("consistency_score", data.get("confidence_score", 0)),
+            "confidence_score": data.get("confidence_score", 0),
+            "explanation": data.get("explanation", "No explanation returned."),
+        }
+
+    # Fallback placeholder (used only if ai/ module isn't found yet)
+    count = len(sources)
     reliability = min(100, 60 + count * 5)
     consistency = min(100, 55 + count * 7)
     confidence = round((reliability + consistency) / 2, 1)
-    explanation = f"Score derived from {count} source(s). Placeholder logic — swap for real AI model."
+    explanation = f"Score derived from {count} source(s). Placeholder logic — AI module not found."
     return {
         "reliability_score": reliability,
         "consistency_score": consistency,
