@@ -34,7 +34,7 @@ export const ActiveRegionsGrid: React.FC<ActiveRegionsGridProps> = ({
             <div
               key={zone.id}
               onClick={() => onSelectZone(zone)}
-              className={`p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 border relative overflow-hidden ${
+              className={`p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between h-full min-h-[140px] space-y-2 border relative overflow-hidden ${
                 isSelected
                   ? 'bg-[#191D26] border-[#38BDF8] shadow-lg ring-1 ring-[#38BDF8]/50'
                   : 'bg-[#14161B] border-[#2A303D] hover:border-[#38BDF8]/40 hover:bg-[#181C24]'
