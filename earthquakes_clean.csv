@@ -1,0 +1,115 @@
+magnitude,origin_time_utc,latitude,longitude,depth_km,region,location,review_status,felt_report
+3.4,2026-07-26T13:44:00,24.266,82.753,10.0,"Singrauli, Madhya Pradesh","133km NNW of Ambikapur, Chhattisgarh, India",Reviewed,Felt it
+3.4,2026-07-26T06:42:40,32.288,76.551,11.0,"Chamba, Himachal Pradesh","22km ENE of Dharamshala, Himachal Pradesh, India",Reviewed,Felt it
+4.5,2026-07-26T04:39:27,26.209,95.292,80.0,Myanmar,"78km E of Mokokchung, Nagaland, India",Reviewed,Felt it
+3.6,2026-07-26T02:44:21,20.417,73.669,5.0,"Nashik, Maharashtra","48km NNW of Nashik, Maharashtra, India",Reviewed,Felt it
+4.2,2026-07-26T00:24:26,35.51,73.41,10.0,Pakistan,"185km NNW of Gulmarg, Jammu and Kashmir, India",Reviewed,Felt it
+3.7,2026-07-25T23:55:50,20.407,73.676,5.0,"Nashik, Maharashtra","47km NNW of Nashik, Maharashtra, India",Reviewed,Felt it
+3.0,2026-07-25T23:44:43,27.569,87.98,10.0,Nepal,"32km NW of Yuksom, Sikkim, India",Reviewed,Felt it
+3.0,2026-07-25T18:53:08,28.141,92.435,25.0,Tibet,"83km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.1,2026-07-25T18:49:48,19.575,77.268,5.0,"Hingoli, Maharashtra","128km SSE of Akola,Maharashtra,India",Reviewed,Felt it
+3.4,2026-07-25T12:10:27,20.433,73.673,5.0,"Nashik, Maharashtra","49km NNW of Nashik, Maharashtra, India",Reviewed,Felt it
+3.1,2026-07-25T10:57:18,19.916,72.877,9.0,"Palghar, Maharashtra","93km N of Mumbai, Maharashtra, India",Reviewed,Felt it
+3.6,2026-07-25T09:55:26,20.36,73.607,5.0,"Nashik, Maharashtra","44km NNW of Nashik, Maharashtra, India",Reviewed,Felt it
+3.3,2026-07-25T09:43:04,22.274,78.273,5.0,"Chhindwara, Madhya Pradesh","27km SW of Pachmarhi, Madhya Pradesh, India",Reviewed,Felt it
+3.1,2026-07-25T02:56:44,26.737,92.368,14.0,"Sonitpur, Assam","43km WNW of Tezpur, Assam, India",Reviewed,Felt it
+3.1,2026-07-24T22:49:46,24.455,91.013,10.0,Bangladesh,"67km NNW of Agartala,Tripura,India",Reviewed,Felt it
+3.6,2026-07-24T08:42:14,34.96,79.683,20.0,"Leh, Ladakh","212km ENE of Leh, Laddakh, India",Reviewed,Felt it
+2.9,2026-07-24T05:05:29,24.93,95.028,112.0,Myanmar,"55km E of Ukhrul, Manipur, India",Reviewed,Felt it
+2.9,2026-07-24T03:11:40,26.242,92.485,25.0,"Nagaon,  Assam","55km SSW of Tezpur, Assam, India",Reviewed,Felt it
+2.6,2026-07-23T21:02:21,32.241,76.379,5.0,"Kangra, Himachal Pradesh","5km ENE of Dharamshala, Himachal Pradesh, India",Reviewed,Felt it
+4.3,2026-07-23T09:36:13,23.437,94.737,121.0,Myanmar,"143km E of Champhai, Mizoram, India",Reviewed,Felt it
+3.5,2026-07-23T03:13:52,27.352,88.516,5.0,"Gangtok, Sikkim","9km W of Gangtok, Sikkim, India",Reviewed,Felt it
+3.0,2026-07-22T18:05:40,28.104,92.487,10.0,Tibet,"83km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.6,2026-07-22T11:48:38,21.527,92.939,105.0,Myanmar,"195km S of Thenzawl, Mizoram, India",Reviewed,Felt it
+3.6,2026-07-22T10:11:07,23.657,80.265,10.0,"Katni, Madhya Pradesh","229km NE of Pachmarhi, Madhya Pradesh, India",Reviewed,Felt it
+2.8,2026-07-22T09:37:46,27.628,92.603,30.0,"Bichom, Arunachal Pradesh","71km E of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.4,2026-07-22T05:13:32,24.68,94.215,59.0,"Kamjong, Manipur","32km ESE of Imphal, Manipur, India",Reviewed,Felt it
+4.2,2026-07-22T04:25:59,29.314,81.91,10.0,Nepal,"166km E of Pithoragarh, Uttarakhand, India",Reviewed,Felt it
+2.8,2026-07-22T00:37:24,28.046,92.478,10.0,Tibet,"78km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+4.2,2026-07-22T00:25:59,28.127,92.511,10.0,Tibet,"87km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+2.9,2026-07-21T22:00:19,26.709,92.527,10.0,"Sonitpur, Assam","27km WNW of Tezpur, Assam, India",Reviewed,Felt it
+2.9,2026-07-21T21:15:45,27.953,92.654,10.0,Tibet,"87km ENE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+2.3,2026-07-21T18:59:49,27.381,88.432,10.0,"Namchi, Sikkim","10km NE of Ravangla, Sikkim, India",Reviewed,Felt it
+2.8,2026-07-21T13:08:24,27.845,92.628,26.0,"Bichom, Arunachal Pradesh","79km ENE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.4,2026-07-21T11:42:31,23.396,93.604,60.0,Myanmar,"28km ESE of Champhai, Mizoram, India",Reviewed,Felt it
+2.2,2026-07-21T10:29:04,27.465,88.669,5.0,"Mangan, Sikkim","15km NNE of Gangtok, Sikkim, India",Reviewed,Felt it
+2.7,2026-07-21T05:55:42,20.038,72.902,10.0,"Palghar, Maharashtra","92km W of Nashik, Maharashtra, India",Reviewed,Felt it
+2.9,2026-07-21T01:41:27,28.149,92.593,10.0,Tibet,"94km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+4.2,2026-07-21T01:07:53,12.913,93.539,50.0,Andaman Sea,"71km ESE of Diglipur, Andaman and Nicobar island, India",Reviewed,Felt it
+2.8,2026-07-20T19:52:20,28.834,77.017,5.0,"North District, Delhi","30km NW of New Delhi, India",Reviewed,Felt it
+2.6,2026-07-20T18:07:56,10.547,76.42,10.0,"Thrissur, Kerala","22km E of Thrissur, Kerala, India",Reviewed,Felt it
+2.1,2026-07-20T17:23:47,32.817,76.075,12.0,"Chamba, Himachal Pradesh","70km NNW of Dharamshala, Himachal Pradesh, India",Reviewed,Felt it
+2.7,2026-07-20T14:50:26,25.956,90.693,5.0,"Goalpara, Assam","69km NE of Tura, Meghalaya, India",Reviewed,Felt it
+3.5,2026-07-20T11:52:37,28.032,92.627,10.0,Tibet,"89km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+2.0,2026-07-20T04:49:46,27.452,88.628,5.0,"Mangan, Sikkim","12km N of Gangtok, Sikkim, India",Reviewed,Felt it
+2.6,2026-07-20T00:53:39,26.488,93.277,10.0,"Karbi Anglong, Assam","51km ESE of Tezpur, Assam, India",Reviewed,Felt it
+4.6,2026-07-19T16:15:32,28.538,82.695,10.0,Nepal,"200km NNE of Ayodhya, Uttar Pradesh, India",Reviewed,Felt it
+3.4,2026-07-19T10:02:36,31.275,80.502,10.0,Tibet,"120km NE of Joshimath, Uttarakhand , India",Reviewed,Felt it
+3.2,2026-07-19T09:33:33,19.38,72.245,5.0,Arabian Sea,"74km WNW of Mumbai, India",Reviewed,Felt it
+3.5,2026-07-19T08:06:20,28.025,92.596,13.0,Tibet,"86km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.2,2026-07-19T04:43:16,33.805,76.118,13.0,"Kishtwar, Jammu and Kashmir","77km ESE of Pahalgam, Jammu and Kashmir, India",Reviewed,Felt it
+3.0,2026-07-18T22:37:47,27.984,92.526,17.0,Tibet,"78km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.2,2026-07-18T20:31:22,27.67,88.59,7.0,"Mangan, Sikkim","15km W of Lachung, Sikkim, India",Reviewed,Felt it
+3.6,2026-07-18T18:47:19,25.121,94.789,96.0,Myanmar,"37km E of Shirui, Manipur, India",Reviewed,Felt it
+2.9,2026-07-18T13:47:44,27.138,92.501,35.0,"West Kameng, Arunachal Pradesh","61km NNW of Tezpur, Assam, India",Reviewed,Felt it
+3.4,2026-07-18T09:11:09,24.45,94.519,55.0,Myanmar,"53km S of Ukhrul, Manipur, India",Reviewed,Felt it
+3.0,2026-07-18T07:49:39,28.045,92.647,10.0,Tibet,"91km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.8,2026-07-18T07:27:14,27.974,92.506,10.0,Tibet,"76km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.3,2026-07-18T01:34:17,26.182,92.191,24.0,"Morigaon, Assam","45km E of Guwahati, Assam, India",Reviewed,Felt it
+3.9,2026-07-17T23:27:48,28.497,87.452,10.0,Tibet,"146km NNW of Yuksom, Sikkim, India",Reviewed,Felt it
+3.4,2026-07-17T22:44:22,25.787,95.242,107.0,Myanmar,"94km SE of Mokokchung, Nagaland, India",Reviewed,Felt it
+3.4,2026-07-17T16:03:20,24.251,82.562,10.0,"Singrauli, Madhya Pradesh","139km NNW of Ambikapur, Chhattisgarh, India",Reviewed,Felt it
+2.7,2026-07-17T15:51:57,25.636,91.515,5.0,"Eastern West Khasi Hills, Meghalaya","38km W of Shillong, Meghalaya, India",Reviewed,Felt it
+2.0,2026-07-17T14:01:07,21.3,79.206,10.0,"Nagpur, Maharashtra","21km NE of Nagpur, Maharashtra, India",Reviewed,Felt it
+4.3,2026-07-17T06:38:10,37.967,95.833,21.0,China,"1093km N of Pangin, Arunachal Pradesh, India",Reviewed,Felt it
+2.9,2026-07-17T06:14:00,25.684,90.236,5.0,"West Garo Hills, Meghalaya","19km N of Tura, Meghalaya, India",Reviewed,Felt it
+3.2,2026-07-17T05:46:48,26.848,91.963,5.0,"Udalguri, Assam","81km NNE of Guwahati, Assam, India",Reviewed,Felt it
+3.5,2026-07-16T20:02:26,30.766,78.67,7.0,"Uttarkashi, Uttarakhand","22km ENE of Uttarkashi, Uttarakhand, India",Reviewed,Felt it
+3.4,2026-07-16T14:23:38,24.063,69.877,25.0,"Kachchh, Gujarat","217km NNW of Rajkot, Gujarat, India",Reviewed,Felt it
+3.9,2026-07-16T14:21:01,23.758,70.013,30.0,"Kachchh, Gujarat","180km NNW of Rajkot, Gujarat, India",Reviewed,Felt it
+3.6,2026-07-16T10:15:17,24.482,93.796,45.0,"Bishnupur, Manipur","2km SE of Moirang, Manipur, India",Reviewed,Felt it
+3.3,2026-07-16T06:46:51,25.734,94.308,18.0,"Phek, Nagaland","21km ENE of Kohima, Nagaland, India",Reviewed,Felt it
+2.2,2026-07-16T02:30:22,27.387,88.333,12.0,Sikkim,"9km NNW of Ravangla, Sikkim, India",Reviewed,Felt it
+3.0,2026-07-15T19:52:08,12.346,77.936,10.0,"Krishnagiri, Tamil Nadu","78km SSE of Bengaluru, Karnataka, India",Reviewed,Felt it
+2.8,2026-07-15T07:32:12,25.812,90.219,10.0,"West Garo Hills, Meghalaya","33km N of Tura, Meghalaya, India",Reviewed,Felt it
+3.2,2026-07-15T06:26:21,25.562,90.756,13.0,"East Garo Hills, Meghalaya","55km E of Tura, Meghalaya, India",Reviewed,Felt it
+4.0,2026-07-15T03:12:34,21.138,93.525,70.0,Myanmar,"250km SSE of Thenzawl, Mizoram, India",Reviewed,Felt it
+3.6,2026-07-15T02:46:52,26.969,95.829,106.0,Myanmar,"106km ESE of Dibrugarh, Assam, India",Reviewed,Felt it
+3.0,2026-07-15T00:01:32,28.056,92.559,8.0,Tibet,"85km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.3,2026-07-14T23:45:37,28.108,92.547,7.0,Tibet,"88km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.3,2026-07-14T23:38:51,27.952,92.519,7.0,Tibet,"75km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+4.5,2026-07-14T23:29:22,37.416,86.149,200.0,China,"838km NE of Hanley, Jammu & Kashmir, India",Reviewed,Felt it
+3.3,2026-07-14T22:57:29,28.042,92.6,8.0,Tibet,"88km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.1,2026-07-14T22:50:58,28.031,92.704,6.0,Tibet,"95km ENE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.5,2026-07-14T22:49:16,28.081,92.58,8.0,Tibet,"89km NE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+2.5,2026-07-14T19:09:06,27.414,88.605,5.0,"Mangan, Sikkim","8km N of Gangtok, Sikkim, India",Reviewed,Felt it
+3.6,2026-07-14T15:50:53,24.95,94.007,28.0,"Imphal East, Manipur","16km NNE of Imphal, Manipur, India",Reviewed,Felt it
+4.0,2026-07-14T11:54:58,34.319,83.37,10.0,Tibet,"446km ENE of Hanley, Jammu & Kashmir, India",Reviewed,Felt it
+2.7,2026-07-13T20:44:53,32.304,76.375,5.0,"Chamba, Himachal Pradesh","10km NNE of Dharamshala, Himachal Pradesh, India",Reviewed,Felt it
+3.5,2026-07-13T19:54:37,32.738,76.691,10.0,"Lahaul And Spiti, Himachal Pradesh","67km NNE of Dharamshala, Himachal Pradesh, India",Reviewed,Felt it
+3.3,2026-07-13T15:45:33,33.897,76.477,10.0,"Kargil, Ladakh","74km WSW of Alchi(Leh),Ladakh,India",Reviewed,Felt it
+2.6,2026-07-13T14:17:12,21.298,79.053,10.0,"Nagpur, Maharashtra","17km NNW of Nagpur, Maharashtra, India",Reviewed,Felt it
+2.2,2026-07-13T08:47:16,32.67,76.04,5.0,"Chamba, Himachal Pradesh","56km NNW of Dharamshala, Himachal Pradesh, India",Reviewed,Felt it
+3.0,2026-07-13T07:54:21,27.578,93.221,12.0,"East Kameng, Arunachal Pradesh","66km NW of Itanagar, Arunachal Pradesh, India",Reviewed,Felt it
+3.4,2026-07-13T07:23:47,24.413,94.229,90.0,"Tengnoupal, Manipur","46km E of Moirang, Manipur, India",Reviewed,Felt it
+3.9,2026-07-13T06:32:10,24.705,94.222,80.0,"Kamjong, Manipur","31km ESE of Imphal, Manipur, India",Reviewed,Felt it
+3.6,2026-07-13T02:00:31,34.246,74.456,10.0,"Baramulla, Jammu and Kashmir","23km NNE of Gulmarg, Jammu and Kashmir, India",Reviewed,Felt it
+3.4,2026-07-12T19:24:55,25.573,90.754,8.0,"East Garo Hills, Meghalaya","55km E of Tura, Meghalaya, India",Reviewed,Felt it
+2.8,2026-07-12T18:01:32,15.771,77.355,19.0,"Kurnool, Andhra Pradesh","107km ENE of Hampi, Karnataka, India",Reviewed,Felt it
+2.6,2026-07-12T12:50:59,25.786,92.671,5.0,"West Karbi Anglong, Assam","81km ENE of Shillong, Meghalaya, India",Reviewed,Felt it
+4.5,2026-07-12T12:00:40,25.609,90.765,5.0,"East Garo Hills, Meghalaya","57km E of Tura, Meghalaya, India",Reviewed,Felt it
+2.8,2026-07-12T09:04:36,26.728,92.385,16.0,"Sonitpur, Assam","41km W of Tezpur, Assam, India",Reviewed,Felt it
+4.5,2026-07-12T05:05:46,16.805,84.381,10.0,Bay of Bengal,"227km E of kakinada, Andhra Pradesh, India",Reviewed,Felt it
+3.0,2026-07-12T01:42:56,28.083,87.245,10.0,Tibet,"124km NW of Yuksom, Sikkim, India",Reviewed,Felt it
+3.5,2026-07-11T11:26:28,19.611,77.18,5.0,"Hingoli, Maharashtra","122km S of Akola,Maharashtra,India",Reviewed,Felt it
+2.6,2026-07-11T01:49:48,32.385,76.377,5.0,"Chamba, Himachal Pradesh","19km NNE of Dharamshala, Himachal Pradesh, India",Reviewed,Felt it
+4.5,2026-07-10T18:59:44,23.59,94.624,100.0,Myanmar,"132km SE of Moirang, Manipur, India",Reviewed,Felt it
+2.7,2026-07-10T12:59:56,27.456,92.129,10.0,"West Kameng, Arunachal Pradesh","28km ESE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.4,2026-07-10T12:13:40,25.422,91.26,10.0,"West Khasi Hills, Meghalaya","50km WNW of Cherrapunjee, Meghalaya, India",Reviewed,Felt it
+3.4,2026-07-10T07:11:07,27.876,87.419,30.0,Tibet,"97km NW of Yuksom, Sikkim, India",Reviewed,Felt it
+2.6,2026-07-10T07:03:51,27.231,92.077,5.0,"West Kameng, Arunachal Pradesh","43km SSE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.1,2026-07-09T23:58:24,25.282,91.041,5.0,"South West Khasi Hills, Meghalaya","69km W of Cherrapunjee, Meghalaya, India",Reviewed,Felt it
+2.9,2026-07-09T15:52:33,27.469,91.971,10.0,"Tawang, Arunachal Pradesh","15km SE of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+2.7,2026-07-09T08:31:52,27.225,91.429,5.0,Bhutan,"59km SW of Tawang, Arunachal Pradesh, India",Reviewed,Felt it
+3.4,2026-07-09T08:07:32,25.463,94.522,15.0,"Ukhrul, Manipur","38km NNE of Shirui, Manipur, India",Reviewed,Felt it

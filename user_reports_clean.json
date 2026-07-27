@@ -1,0 +1,1202 @@
+[
+  {
+    "report_id": "REP_001",
+    "latitude": 22.4641,
+    "longitude": 88.43349,
+    "severity": "Low",
+    "water_level_cm": 38,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_002",
+    "latitude": 22.56449,
+    "longitude": 88.40437,
+    "severity": "High",
+    "water_level_cm": 105,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_003",
+    "latitude": 22.58641,
+    "longitude": 88.30991,
+    "severity": "Medium",
+    "water_level_cm": 24,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_004",
+    "latitude": 22.6186,
+    "longitude": 88.33658,
+    "severity": "Medium",
+    "water_level_cm": 109,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_005",
+    "latitude": 22.47767,
+    "longitude": 88.41665,
+    "severity": "Medium",
+    "water_level_cm": 75,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_006",
+    "latitude": 22.57002,
+    "longitude": 88.32005,
+    "severity": "High",
+    "water_level_cm": 29,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_007",
+    "latitude": 22.48127,
+    "longitude": 88.38958,
+    "severity": "High",
+    "water_level_cm": 24,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_008",
+    "latitude": 22.5287,
+    "longitude": 88.38597,
+    "severity": "High",
+    "water_level_cm": 27,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_009",
+    "latitude": 22.52446,
+    "longitude": 88.33018,
+    "severity": "High",
+    "water_level_cm": 56,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_010",
+    "latitude": 22.57691,
+    "longitude": 88.31963,
+    "severity": "Medium",
+    "water_level_cm": 49,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_011",
+    "latitude": 22.64134,
+    "longitude": 88.41742,
+    "severity": "Low",
+    "water_level_cm": 15,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_012",
+    "latitude": 22.60445,
+    "longitude": 88.40385,
+    "severity": "Low",
+    "water_level_cm": 66,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_013",
+    "latitude": 22.59668,
+    "longitude": 88.39315,
+    "severity": "High",
+    "water_level_cm": 89,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_014",
+    "latitude": 22.51242,
+    "longitude": 88.35117,
+    "severity": "Low",
+    "water_level_cm": 17,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_015",
+    "latitude": 22.51518,
+    "longitude": 88.35574,
+    "severity": "High",
+    "water_level_cm": 14,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_016",
+    "latitude": 22.57138,
+    "longitude": 88.42442,
+    "severity": "Medium",
+    "water_level_cm": 12,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_017",
+    "latitude": 22.63422,
+    "longitude": 88.38423,
+    "severity": "Low",
+    "water_level_cm": 12,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_018",
+    "latitude": 22.63623,
+    "longitude": 88.40302,
+    "severity": "High",
+    "water_level_cm": 76,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_019",
+    "latitude": 22.58746,
+    "longitude": 88.36886,
+    "severity": "Medium",
+    "water_level_cm": 26,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_020",
+    "latitude": 22.51847,
+    "longitude": 88.39716,
+    "severity": "Low",
+    "water_level_cm": 120,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_021",
+    "latitude": 22.63153,
+    "longitude": 88.3794,
+    "severity": "High",
+    "water_level_cm": 89,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_022",
+    "latitude": 22.60116,
+    "longitude": 88.33637,
+    "severity": "High",
+    "water_level_cm": 23,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_023",
+    "latitude": 22.49065,
+    "longitude": 88.37893,
+    "severity": "High",
+    "water_level_cm": 84,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_024",
+    "latitude": 22.49892,
+    "longitude": 88.42548,
+    "severity": "High",
+    "water_level_cm": 17,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_025",
+    "latitude": 22.5864,
+    "longitude": 88.38917,
+    "severity": "Medium",
+    "water_level_cm": 69,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_026",
+    "latitude": 22.45941,
+    "longitude": 88.36943,
+    "severity": "Medium",
+    "water_level_cm": 40,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_027",
+    "latitude": 22.55459,
+    "longitude": 88.31736,
+    "severity": "Low",
+    "water_level_cm": 87,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_028",
+    "latitude": 22.45044,
+    "longitude": 88.41877,
+    "severity": "High",
+    "water_level_cm": 82,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_029",
+    "latitude": 22.54656,
+    "longitude": 88.34696,
+    "severity": "Low",
+    "water_level_cm": 103,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_030",
+    "latitude": 22.58445,
+    "longitude": 88.43873,
+    "severity": "Low",
+    "water_level_cm": 107,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_031",
+    "latitude": 22.54699,
+    "longitude": 88.34271,
+    "severity": "Low",
+    "water_level_cm": 87,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_032",
+    "latitude": 22.47813,
+    "longitude": 88.42635,
+    "severity": "Low",
+    "water_level_cm": 53,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_033",
+    "latitude": 22.54539,
+    "longitude": 88.35651,
+    "severity": "Low",
+    "water_level_cm": 34,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_034",
+    "latitude": 22.62471,
+    "longitude": 88.44239,
+    "severity": "Low",
+    "water_level_cm": 11,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_035",
+    "latitude": 22.53501,
+    "longitude": 88.43597,
+    "severity": "Medium",
+    "water_level_cm": 43,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_036",
+    "latitude": 22.54984,
+    "longitude": 88.41991,
+    "severity": "Low",
+    "water_level_cm": 58,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_037",
+    "latitude": 22.46156,
+    "longitude": 88.38944,
+    "severity": "Medium",
+    "water_level_cm": 103,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_038",
+    "latitude": 22.49469,
+    "longitude": 88.44888,
+    "severity": "Medium",
+    "water_level_cm": 84,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_039",
+    "latitude": 22.45965,
+    "longitude": 88.30438,
+    "severity": "High",
+    "water_level_cm": 30,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_040",
+    "latitude": 22.4822,
+    "longitude": 88.43551,
+    "severity": "High",
+    "water_level_cm": 53,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_041",
+    "latitude": 22.60677,
+    "longitude": 88.41396,
+    "severity": "Low",
+    "water_level_cm": 20,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_042",
+    "latitude": 22.59862,
+    "longitude": 88.44974,
+    "severity": "High",
+    "water_level_cm": 118,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_043",
+    "latitude": 22.53731,
+    "longitude": 88.43719,
+    "severity": "Low",
+    "water_level_cm": 96,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_044",
+    "latitude": 22.53405,
+    "longitude": 88.32966,
+    "severity": "Low",
+    "water_level_cm": 117,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_045",
+    "latitude": 22.6347,
+    "longitude": 88.38108,
+    "severity": "High",
+    "water_level_cm": 17,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_046",
+    "latitude": 22.56329,
+    "longitude": 88.38885,
+    "severity": "Medium",
+    "water_level_cm": 61,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_047",
+    "latitude": 22.59575,
+    "longitude": 88.40834,
+    "severity": "Low",
+    "water_level_cm": 57,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_048",
+    "latitude": 22.49788,
+    "longitude": 88.31126,
+    "severity": "High",
+    "water_level_cm": 41,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_049",
+    "latitude": 22.54981,
+    "longitude": 88.3712,
+    "severity": "Low",
+    "water_level_cm": 50,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_050",
+    "latitude": 22.53338,
+    "longitude": 88.33134,
+    "severity": "Low",
+    "water_level_cm": 42,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_051",
+    "latitude": 22.61671,
+    "longitude": 88.38619,
+    "severity": "High",
+    "water_level_cm": 12,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_052",
+    "latitude": 22.49442,
+    "longitude": 88.33819,
+    "severity": "High",
+    "water_level_cm": 15,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_053",
+    "latitude": 22.61473,
+    "longitude": 88.38144,
+    "severity": "High",
+    "water_level_cm": 47,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_054",
+    "latitude": 22.49961,
+    "longitude": 88.41877,
+    "severity": "High",
+    "water_level_cm": 34,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_055",
+    "latitude": 22.46406,
+    "longitude": 88.36135,
+    "severity": "Low",
+    "water_level_cm": 68,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_056",
+    "latitude": 22.49616,
+    "longitude": 88.35119,
+    "severity": "Medium",
+    "water_level_cm": 84,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_057",
+    "latitude": 22.58353,
+    "longitude": 88.36682,
+    "severity": "Low",
+    "water_level_cm": 53,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_058",
+    "latitude": 22.62577,
+    "longitude": 88.41377,
+    "severity": "Medium",
+    "water_level_cm": 74,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_059",
+    "latitude": 22.52798,
+    "longitude": 88.34402,
+    "severity": "Low",
+    "water_level_cm": 95,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_060",
+    "latitude": 22.53197,
+    "longitude": 88.40057,
+    "severity": "High",
+    "water_level_cm": 111,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_061",
+    "latitude": 22.46979,
+    "longitude": 88.30881,
+    "severity": "Low",
+    "water_level_cm": 97,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_062",
+    "latitude": 22.50255,
+    "longitude": 88.30963,
+    "severity": "Medium",
+    "water_level_cm": 84,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_063",
+    "latitude": 22.60198,
+    "longitude": 88.43061,
+    "severity": "Low",
+    "water_level_cm": 62,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_064",
+    "latitude": 22.4603,
+    "longitude": 88.34909,
+    "severity": "Low",
+    "water_level_cm": 38,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_065",
+    "latitude": 22.51545,
+    "longitude": 88.31058,
+    "severity": "High",
+    "water_level_cm": 66,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_066",
+    "latitude": 22.49318,
+    "longitude": 88.42307,
+    "severity": "High",
+    "water_level_cm": 41,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_067",
+    "latitude": 22.59352,
+    "longitude": 88.40559,
+    "severity": "Low",
+    "water_level_cm": 50,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_068",
+    "latitude": 22.52947,
+    "longitude": 88.43212,
+    "severity": "Low",
+    "water_level_cm": 110,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_069",
+    "latitude": 22.62686,
+    "longitude": 88.31908,
+    "severity": "Medium",
+    "water_level_cm": 11,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_070",
+    "latitude": 22.58034,
+    "longitude": 88.4036,
+    "severity": "High",
+    "water_level_cm": 100,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_071",
+    "latitude": 22.5683,
+    "longitude": 88.4164,
+    "severity": "Low",
+    "water_level_cm": 119,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_072",
+    "latitude": 22.50936,
+    "longitude": 88.35228,
+    "severity": "Low",
+    "water_level_cm": 46,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_073",
+    "latitude": 22.47953,
+    "longitude": 88.43414,
+    "severity": "Medium",
+    "water_level_cm": 64,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_074",
+    "latitude": 22.47059,
+    "longitude": 88.35345,
+    "severity": "Medium",
+    "water_level_cm": 107,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_075",
+    "latitude": 22.52785,
+    "longitude": 88.38766,
+    "severity": "Low",
+    "water_level_cm": 66,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_076",
+    "latitude": 22.52951,
+    "longitude": 88.30796,
+    "severity": "High",
+    "water_level_cm": 19,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_077",
+    "latitude": 22.58868,
+    "longitude": 88.34314,
+    "severity": "Low",
+    "water_level_cm": 15,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_078",
+    "latitude": 22.46836,
+    "longitude": 88.31565,
+    "severity": "High",
+    "water_level_cm": 28,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_079",
+    "latitude": 22.53785,
+    "longitude": 88.32518,
+    "severity": "Low",
+    "water_level_cm": 95,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_080",
+    "latitude": 22.6494,
+    "longitude": 88.4492,
+    "severity": "Low",
+    "water_level_cm": 50,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_081",
+    "latitude": 22.62319,
+    "longitude": 88.43871,
+    "severity": "Low",
+    "water_level_cm": 120,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_082",
+    "latitude": 22.45919,
+    "longitude": 88.33264,
+    "severity": "High",
+    "water_level_cm": 109,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_083",
+    "latitude": 22.48594,
+    "longitude": 88.32142,
+    "severity": "High",
+    "water_level_cm": 101,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_084",
+    "latitude": 22.53588,
+    "longitude": 88.39611,
+    "severity": "Low",
+    "water_level_cm": 114,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_085",
+    "latitude": 22.50948,
+    "longitude": 88.39074,
+    "severity": "High",
+    "water_level_cm": 80,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_086",
+    "latitude": 22.52956,
+    "longitude": 88.38807,
+    "severity": "High",
+    "water_level_cm": 59,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_087",
+    "latitude": 22.58947,
+    "longitude": 88.30684,
+    "severity": "Low",
+    "water_level_cm": 114,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_088",
+    "latitude": 22.56971,
+    "longitude": 88.44073,
+    "severity": "Low",
+    "water_level_cm": 87,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_089",
+    "latitude": 22.46085,
+    "longitude": 88.30904,
+    "severity": "High",
+    "water_level_cm": 71,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_090",
+    "latitude": 22.46567,
+    "longitude": 88.34595,
+    "severity": "Medium",
+    "water_level_cm": 56,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_091",
+    "latitude": 22.48305,
+    "longitude": 88.44655,
+    "severity": "High",
+    "water_level_cm": 21,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_092",
+    "latitude": 22.63321,
+    "longitude": 88.39068,
+    "severity": "High",
+    "water_level_cm": 68,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_093",
+    "latitude": 22.56668,
+    "longitude": 88.31053,
+    "severity": "Medium",
+    "water_level_cm": 25,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_094",
+    "latitude": 22.46018,
+    "longitude": 88.38796,
+    "severity": "Medium",
+    "water_level_cm": 119,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_095",
+    "latitude": 22.64406,
+    "longitude": 88.30811,
+    "severity": "Low",
+    "water_level_cm": 76,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_096",
+    "latitude": 22.5948,
+    "longitude": 88.40631,
+    "severity": "High",
+    "water_level_cm": 37,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_097",
+    "latitude": 22.6015,
+    "longitude": 88.44057,
+    "severity": "Low",
+    "water_level_cm": 73,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_098",
+    "latitude": 22.46632,
+    "longitude": 88.36004,
+    "severity": "Medium",
+    "water_level_cm": 30,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_099",
+    "latitude": 22.62648,
+    "longitude": 88.33523,
+    "severity": "High",
+    "water_level_cm": 11,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_100",
+    "latitude": 22.56983,
+    "longitude": 88.39111,
+    "severity": "High",
+    "water_level_cm": 11,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_101",
+    "latitude": 22.64994,
+    "longitude": 88.44846,
+    "severity": "Medium",
+    "water_level_cm": 102,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_102",
+    "latitude": 22.55102,
+    "longitude": 88.31265,
+    "severity": "Low",
+    "water_level_cm": 71,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_103",
+    "latitude": 22.52167,
+    "longitude": 88.33599,
+    "severity": "Low",
+    "water_level_cm": 112,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_104",
+    "latitude": 22.57085,
+    "longitude": 88.44271,
+    "severity": "Medium",
+    "water_level_cm": 65,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_105",
+    "latitude": 22.5891,
+    "longitude": 88.41902,
+    "severity": "Low",
+    "water_level_cm": 13,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_106",
+    "latitude": 22.56228,
+    "longitude": 88.38987,
+    "severity": "Low",
+    "water_level_cm": 97,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_107",
+    "latitude": 22.60285,
+    "longitude": 88.35181,
+    "severity": "Medium",
+    "water_level_cm": 22,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_108",
+    "latitude": 22.49489,
+    "longitude": 88.38356,
+    "severity": "High",
+    "water_level_cm": 51,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_109",
+    "latitude": 22.57831,
+    "longitude": 88.386,
+    "severity": "Medium",
+    "water_level_cm": 35,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_110",
+    "latitude": 22.51768,
+    "longitude": 88.38603,
+    "severity": "High",
+    "water_level_cm": 17,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_111",
+    "latitude": 22.63065,
+    "longitude": 88.4287,
+    "severity": "Medium",
+    "water_level_cm": 95,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_112",
+    "latitude": 22.54783,
+    "longitude": 88.39255,
+    "severity": "Low",
+    "water_level_cm": 118,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_113",
+    "latitude": 22.47941,
+    "longitude": 88.38566,
+    "severity": "High",
+    "water_level_cm": 10,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_114",
+    "latitude": 22.62837,
+    "longitude": 88.44676,
+    "severity": "High",
+    "water_level_cm": 106,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_115",
+    "latitude": 22.51952,
+    "longitude": 88.38341,
+    "severity": "Medium",
+    "water_level_cm": 70,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_116",
+    "latitude": 22.46051,
+    "longitude": 88.38784,
+    "severity": "Medium",
+    "water_level_cm": 89,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_117",
+    "latitude": 22.45106,
+    "longitude": 88.36784,
+    "severity": "Medium",
+    "water_level_cm": 81,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_118",
+    "latitude": 22.64671,
+    "longitude": 88.39103,
+    "severity": "High",
+    "water_level_cm": 78,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_119",
+    "latitude": 22.54858,
+    "longitude": 88.41663,
+    "severity": "Medium",
+    "water_level_cm": 61,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_120",
+    "latitude": 22.58578,
+    "longitude": 88.33934,
+    "severity": "Medium",
+    "water_level_cm": 65,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_121",
+    "latitude": 22.63624,
+    "longitude": 88.32434,
+    "severity": "Low",
+    "water_level_cm": 12,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_122",
+    "latitude": 22.55718,
+    "longitude": 88.41302,
+    "severity": "High",
+    "water_level_cm": 28,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_123",
+    "latitude": 22.45082,
+    "longitude": 88.37306,
+    "severity": "High",
+    "water_level_cm": 87,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_124",
+    "latitude": 22.55159,
+    "longitude": 88.41104,
+    "severity": "Low",
+    "water_level_cm": 75,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_125",
+    "latitude": 22.46472,
+    "longitude": 88.38416,
+    "severity": "High",
+    "water_level_cm": 84,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_126",
+    "latitude": 22.5163,
+    "longitude": 88.38574,
+    "severity": "High",
+    "water_level_cm": 90,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_127",
+    "latitude": 22.62378,
+    "longitude": 88.42092,
+    "severity": "High",
+    "water_level_cm": 97,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_128",
+    "latitude": 22.55148,
+    "longitude": 88.41291,
+    "severity": "Low",
+    "water_level_cm": 73,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_129",
+    "latitude": 22.47096,
+    "longitude": 88.32063,
+    "severity": "Medium",
+    "water_level_cm": 27,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_130",
+    "latitude": 22.50788,
+    "longitude": 88.41876,
+    "severity": "Medium",
+    "water_level_cm": 49,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_131",
+    "latitude": 22.63651,
+    "longitude": 88.33873,
+    "severity": "High",
+    "water_level_cm": 29,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_132",
+    "latitude": 22.54935,
+    "longitude": 88.34915,
+    "severity": "Low",
+    "water_level_cm": 74,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_133",
+    "latitude": 22.59322,
+    "longitude": 88.42321,
+    "severity": "Low",
+    "water_level_cm": 18,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_134",
+    "latitude": 22.46576,
+    "longitude": 88.31746,
+    "severity": "High",
+    "water_level_cm": 67,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_135",
+    "latitude": 22.61382,
+    "longitude": 88.38641,
+    "severity": "Medium",
+    "water_level_cm": 115,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_136",
+    "latitude": 22.47917,
+    "longitude": 88.30502,
+    "severity": "Low",
+    "water_level_cm": 26,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_137",
+    "latitude": 22.57709,
+    "longitude": 88.42035,
+    "severity": "Low",
+    "water_level_cm": 85,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_138",
+    "latitude": 22.57684,
+    "longitude": 88.31066,
+    "severity": "High",
+    "water_level_cm": 113,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_139",
+    "latitude": 22.51309,
+    "longitude": 88.31562,
+    "severity": "High",
+    "water_level_cm": 11,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_140",
+    "latitude": 22.64283,
+    "longitude": 88.39454,
+    "severity": "High",
+    "water_level_cm": 117,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_141",
+    "latitude": 22.63214,
+    "longitude": 88.4428,
+    "severity": "High",
+    "water_level_cm": 86,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_142",
+    "latitude": 22.57786,
+    "longitude": 88.30539,
+    "severity": "Medium",
+    "water_level_cm": 58,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_143",
+    "latitude": 22.56485,
+    "longitude": 88.44506,
+    "severity": "Low",
+    "water_level_cm": 18,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_144",
+    "latitude": 22.52875,
+    "longitude": 88.44976,
+    "severity": "Medium",
+    "water_level_cm": 101,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_145",
+    "latitude": 22.4697,
+    "longitude": 88.34756,
+    "severity": "High",
+    "water_level_cm": 32,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_146",
+    "latitude": 22.50686,
+    "longitude": 88.30529,
+    "severity": "Low",
+    "water_level_cm": 74,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_147",
+    "latitude": 22.56325,
+    "longitude": 88.38708,
+    "severity": "Medium",
+    "water_level_cm": 58,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_148",
+    "latitude": 22.53691,
+    "longitude": 88.43143,
+    "severity": "High",
+    "water_level_cm": 18,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_149",
+    "latitude": 22.58516,
+    "longitude": 88.37878,
+    "severity": "Low",
+    "water_level_cm": 62,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  },
+  {
+    "report_id": "REP_150",
+    "latitude": 22.62311,
+    "longitude": 88.37738,
+    "severity": "High",
+    "water_level_cm": 101,
+    "timestamp_utc": "2026-07-25T14:00:00Z"
+  }
+]
