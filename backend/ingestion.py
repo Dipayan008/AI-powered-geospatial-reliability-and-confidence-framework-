@@ -125,3 +125,12 @@ Return ONLY a JSON object with these exact keys, no other text:
             "confidence_score": 0,
             "explanation": f"AI scoring failed: {str(e)}",
         }
+
+def score_sources(sources) -> dict:
+    """
+    Adapter for main.py, which expects a `score_sources(sources)` function.
+    `sources` here are DataSource model objects (from the database),
+    not raw strings — so we pull out their text content first.
+    """
+    texts = [s.raw_content for s in sources]
+    return fake_ai_score(texts)
