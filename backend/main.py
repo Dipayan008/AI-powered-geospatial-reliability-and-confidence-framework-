@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+﻿from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -190,6 +190,78 @@ def analyze_live(source_ids: str, db: Session = Depends(get_db)):
     if not sources:
         raise HTTPException(status_code=404, detail="No matching sources found")
     return ingestion.score_sources(sources)
+
+
+@app.post("/analyze-location")
+def analyze_location(lat: float, lon: float, title: str, summary: str, db: Session = Depends(get_db)):
+    """
+    Fetches REAL live data for a location from OpenWeather, OpenStreetMap,
+    and Sentinel-2 satellite imagery (NDWI water-index signal), stores each
+    as a DataSource, scores them through the real AI confidence engine, and
+    returns the resulting insight. Any adapter that fails (bad key, rate
+    limit, no signal) is silently skipped rather than crashing the request.
+    """
+    stored_sources = []
+
+    weather_obs = ingestion.fetch_live_weather_safe(lat, lon)
+    if weather_obs:
+        stored_sources.append(ingestion.ingest_source(
+            db, "OpenWeather Live", "weather", weather_obs["signal"], lat, lon
+        ))
+
+    osm_obs = ingestion.fetch_live_osm_safe(lat, lon)
+    if osm_obs:
+        stored_sources.append(ingestion.ingest_source(
+            db, "OpenStreetMap Live", "osm", osm_obs["signal"], lat, lon
+        ))
+
+    sentinel_obs = ingestion.fetch_live_sentinel_safe(lat, lon)
+    if sentinel_obs:
+        stored_sources.append(ingestion.ingest_source(
+            db, "Sentinel-2 Live", "satellite", sentinel_obs["signal"], lat, lon
+        ))
+
+    if not stored_sources:
+        raise HTTPException(
+            status_code=503,
+            detail="No live data sources could be fetched (check API keys/network)."
+        )
+
+    scores = ingestion.score_sources(stored_sources)
+
+    insight = models.Insight(
+        source_id=stored_sources[0].id,
+        title=title,
+        summary=summary,
+        reliability_score=scores["reliability_score"],
+        consistency_score=scores["consistency_score"],
+        confidence_score=scores["confidence_score"],
+        explanation=scores["explanation"],
+    )
+    db.add(insight)
+    db.commit()
+    db.refresh(insight)
+
+    if insight.confidence_score < 50:
+        db.add(models.Alert(
+            insight_id=insight.id,
+            message=f"Low confidence ({insight.confidence_score}%) for '{insight.title}'",
+            severity="warning",
+        ))
+        db.commit()
+
+    return {
+        "insight_id": insight.id,
+        "sources_fetched": {
+            "weather": weather_obs is not None,
+            "osm": osm_obs is not None,
+            "satellite": sentinel_obs is not None,
+        },
+        "reliability_score": insight.reliability_score,
+        "consistency_score": insight.consistency_score,
+        "confidence_score": insight.confidence_score,
+        "explanation": insight.explanation,
+    }
 
 
 @app.get("/health/ai")
