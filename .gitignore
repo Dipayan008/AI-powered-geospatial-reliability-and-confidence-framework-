@@ -29,3 +29,5 @@ __pycache__/
 # Database
 backend/geoai.db
 .env
+server*.log
+server*.log
