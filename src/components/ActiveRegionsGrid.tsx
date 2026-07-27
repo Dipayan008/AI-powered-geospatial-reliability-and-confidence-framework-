@@ -49,6 +49,13 @@ export const ActiveRegionsGrid: React.FC<ActiveRegionsGridProps> = ({
                 )}
               </div>
 
+              {zone.isLive === true && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/40 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+                  LIVE
+                </span>
+              )}
+
               <div className="space-y-1 pt-1 border-t border-[#2A303D]/60 text-[11px]">
                 <div className="text-[#8E95A5] truncate">{zone.disasterType}</div>
                 <div className="text-[#8E95A5] text-[10px] truncate">{zone.stateRegion}</div>
