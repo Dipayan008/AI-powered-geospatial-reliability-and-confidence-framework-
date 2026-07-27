@@ -4,9 +4,9 @@ export interface SocialGatheringHotspot {
   id: string;
   name: string;
   category: 'Bazar / Open Market' | 'Shopping Mall / Commercial Hub' | 'Public Park / Gathering Ground' | 'Transit Hub / Railway Station';
-  distanceKm: number; // Distance from hazard origin point
-  coordinates: [number, number]; // [lat, lng]
-  peakCrowdEstimate: string; // e.g. "~16,500 Shoppers & Vendors"
+  distanceKm: number;
+  coordinates: [number, number];
+  peakCrowdEstimate: string;
   riskPriority: 'CRITICAL HIGH-DENSITY ALERT' | 'URGENT EVACUATION WARNING';
   evacuationDirective: string;
 }
@@ -14,13 +14,14 @@ export interface SocialGatheringHotspot {
 export interface HazardZone {
   id: string;
   name: string;
-  targetTownVillage: string; // Specific town / village / ward (e.g. "Bail Bazar & Kranti Nagar Ward")
-  subDistrictDistrict: string; // Taluka & District (e.g. "Kurla Sub-District, Mumbai Suburban")
+  isLive?: boolean;
+  targetTownVillage: string;
+  subDistrictDistrict: string;
   stateRegion: string;
   disasterType: 'Flash Flood' | 'Landslide' | 'Cyclone Surge' | 'Wildfire' | 'Micro-Seismic';
   riskLevel: 'Low' | 'Medium' | 'High';
-  confidencePercentage: number; // e.g. 20, 50, 90
-  coordinates: [number, number]; // Primary Origin [lat, lng]
+  confidencePercentage: number;
+  coordinates: [number, number];
   epicenterFocalPoint: string;
   historicalPatternMatch: string;
   primaryAnomalyDriver: string;
@@ -91,26 +92,6 @@ export const INDIA_HAZARD_ZONES: HazardZone[] = [
         peakCrowdEstimate: '22,000 Visitors',
         riskPriority: 'CRITICAL HIGH-DENSITY ALERT',
         evacuationDirective: 'Trigger Mall Management PA System to direct lower basement parking visitors to upper floor exits.',
-      },
-      {
-        id: 'HOT-01-C',
-        name: 'Kranti Nagar Community Park & Children Ground',
-        category: 'Public Park / Gathering Ground',
-        distanceKm: 0.4,
-        coordinates: [19.0815, 72.8841],
-        peakCrowdEstimate: '4,200 Residents',
-        riskPriority: 'URGENT EVACUATION WARNING',
-        evacuationDirective: 'Deploy local police siren vehicle to clear public ground & guide families to municipal school shelter.',
-      },
-      {
-        id: 'HOT-01-D',
-        name: 'Kurla Railway Junction & Bus Terminal',
-        category: 'Transit Hub / Railway Station',
-        distanceKm: 1.1,
-        coordinates: [19.0657, 72.8794],
-        peakCrowdEstimate: '45,000 Commuters',
-        riskPriority: 'CRITICAL HIGH-DENSITY ALERT',
-        evacuationDirective: 'Issue Central Railway Platform PA announcements & seal low-level pedestrian subways.',
       },
     ],
   },
@@ -228,6 +209,16 @@ export const INDIA_HAZARD_ZONES: HazardZone[] = [
         riskPriority: 'CRITICAL HIGH-DENSITY ALERT',
         evacuationDirective: 'Transmit urgent SMS to Panchayath ward members & clear bridge bazaar area.',
       },
+      {
+        id: 'HOT-04-B',
+        name: 'Punchirimattam Tea Estate Worker Settlement',
+        category: 'Public Park / Gathering Ground',
+        distanceKm: 1.1,
+        coordinates: [11.5260, 76.1620],
+        peakCrowdEstimate: '2,100 Estate Workers',
+        riskPriority: 'URGENT EVACUATION WARNING',
+        evacuationDirective: 'Deploy local siren vehicles to guide plantation workers to hill refuge.',
+      },
     ],
   },
   {
@@ -259,6 +250,16 @@ export const INDIA_HAZARD_ZONES: HazardZone[] = [
         peakCrowdEstimate: '9,500 Farmers & Buyers',
         riskPriority: 'URGENT EVACUATION WARNING',
         evacuationDirective: 'Alert APMC Market Committee & inspect riverbank stalls.',
+      },
+      {
+        id: 'HOT-05-B',
+        name: 'Jorve Village Bus Stand & Commercial Plaza',
+        category: 'Transit Hub / Railway Station',
+        distanceKm: 0.9,
+        coordinates: [19.5740, 74.2040],
+        peakCrowdEstimate: '1,800 Villagers & Commuters',
+        riskPriority: 'URGENT EVACUATION WARNING',
+        evacuationDirective: 'Issue village PA alert for low-lying shop owners near riverbank.',
       },
     ],
   },
@@ -292,17 +293,149 @@ export const INDIA_HAZARD_ZONES: HazardZone[] = [
         riskPriority: 'URGENT EVACUATION WARNING',
         evacuationDirective: 'Monitor tremor sensors & notify local shopkeeper association.',
       },
+      {
+        id: 'HOT-06-B',
+        name: 'Sikra Highway Junction & Truck Stop',
+        category: 'Transit Hub / Railway Station',
+        distanceKm: 1.3,
+        coordinates: [23.2950, 70.3490],
+        peakCrowdEstimate: '1,400 Drivers & Vendors',
+        riskPriority: 'URGENT EVACUATION WARNING',
+        evacuationDirective: 'Instruct highway patrol to maintain clear evacuation routes.',
+      },
     ],
   }
 ];
+function mapAnalyzeLiveToHazard(data: any): HazardZone {
+  const riskLevel: "Low" | "Medium" | "High" =
+    data.confidence_score >= 70
+      ? "High"
+      : data.confidence_score >= 40
+      ? "Medium"
+      : "Low";
+
+  return {
+    id: "LIVE-001",
+    name: data.event,
+    isLive: true,
+
+    targetTownVillage: "Detected Location",
+    subDistrictDistrict: "Unknown",
+    stateRegion: "Unknown",
+
+    disasterType: "Flash Flood",
+
+    riskLevel,
+    confidencePercentage: data.confidence_score,
+
+    coordinates: [data.location[0], data.location[1]],
+
+    epicenterFocalPoint: data.event,
+    historicalPatternMatch: "Live AI Analysis",
+
+    primaryAnomalyDriver: data.contributing_sources.join(", "),
+
+    satelliteRadarSig: JSON.stringify(data.sources_fetched),
+
+    weatherCorrelation: data.sources_fetched.weather
+      ? "Weather Connected"
+      : "Weather Unavailable",
+
+    topographyFactor: "Not Available",
+
+    citizenAlertStatus:
+      data.alert === "Low Alert"
+        ? "Monitoring Only"
+        : "Active Alert Issued",
+
+    affectedPopulationEstimate: "Unknown",
+
+    xaiReasoning: data.explanation,
+
+    socialGatheringHotspots: [],
+  };
+}
 
 export async function fetchHazardZones(): Promise<HazardZone[]> {
-  return Promise.resolve(INDIA_HAZARD_ZONES);
+  const lat = 19.0760;
+const lon = 72.8777;
+
+const response = await fetch(
+  `http://127.0.0.1:8000/analyze-live?lat=${lat}&lon=${lon}`
+);
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch hazard data");
+  }
+
+ const data = await response.json();
+
+console.log(data);
+
+return [mapAnalyzeLiveToHazard(data)];
+}
+
+const BACKEND_URL = 'http://127.0.0.1:8001';
+
+interface BackendInsight {
+  id: number;
+  source_id: number;
+  title: string;
+  summary: string;
+  reliability_score: number;
+  consistency_score: number;
+  confidence_score: number;
+  explanation: string;
+  created_at: string;
+}
+
+function mapInsightToHazardZone(insight: BackendInsight): HazardZone {
+  const riskLevel: 'Low' | 'Medium' | 'High' =
+    insight.confidence_score >= 70 ? 'High' :
+    insight.confidence_score >= 40 ? 'Medium' : 'Low';
+
+  return {
+    id: `LIVE-${insight.id}`,
+    name: insight.title,
+    isLive: true,
+    targetTownVillage: 'Not available (no reverse-geocoding source connected)',
+    subDistrictDistrict: 'Not available (no reverse-geocoding source connected)',
+    stateRegion: 'Not available (no reverse-geocoding source connected)',
+    disasterType: 'Flash Flood',
+    riskLevel,
+    confidencePercentage: Math.round(insight.confidence_score),
+    coordinates: [0, 0],
+    epicenterFocalPoint: insight.summary,
+    historicalPatternMatch: 'Not available (no historical pattern-match source connected)',
+    primaryAnomalyDriver: 'Not available (no anomaly-driver source connected)',
+    satelliteRadarSig: 'Not available (no satellite data source connected)',
+    weatherCorrelation: 'Not available (no weather data source connected)',
+    topographyFactor: 'Not available (no topography data source connected)',
+    citizenAlertStatus: insight.confidence_score < 50 ? 'Active Alert Issued' : 'Monitoring Only',
+    affectedPopulationEstimate: 'Not available (no demographic data source connected)',
+    xaiReasoning: insight.explanation,
+    socialGatheringHotspots: [],
+  };
+}
+
+export async function fetchLiveHazardZones(): Promise<HazardZone[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/insights`);
+    if (!res.ok) return [];
+    const data: BackendInsight[] = await res.json();
+    return data.map(mapInsightToHazardZone);
+  } catch {
+    return [];
+  }
+}
+
+export async function fetchAllHazardZones(): Promise<HazardZone[]> {
+  return await fetchHazardZones();
 }
 
 export async function detectUserLocationAndCheckSurroundingHazards(): Promise<UserLocationHazardAssessment> {
   return new Promise((resolve) => {
-    const defaultCoords: [number, number] = [19.0760, 72.8777]; // Mumbai Sector
+    const defaultCoords: [number, number] = [19.0760, 72.8777];
     const findNearestAndAssess = (lat: number, lng: number, locName: string) => {
       let minDistance = Infinity;
       let nearest = INDIA_HAZARD_ZONES[0];

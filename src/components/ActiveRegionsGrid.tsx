@@ -34,7 +34,7 @@ export const ActiveRegionsGrid: React.FC<ActiveRegionsGridProps> = ({
             <div
               key={zone.id}
               onClick={() => onSelectZone(zone)}
-              className={`p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between space-y-2 border relative overflow-hidden ${
+              className={`p-3.5 rounded-xl cursor-pointer transition-all flex flex-col justify-between h-full min-h-[140px] space-y-2 border relative overflow-hidden ${
                 isSelected
                   ? 'bg-[#191D26] border-[#38BDF8] shadow-lg ring-1 ring-[#38BDF8]/50'
                   : 'bg-[#14161B] border-[#2A303D] hover:border-[#38BDF8]/40 hover:bg-[#181C24]'
@@ -48,6 +48,13 @@ export const ActiveRegionsGrid: React.FC<ActiveRegionsGridProps> = ({
                   <CheckCircle className="w-3.5 h-3.5 text-[#38BDF8] flex-shrink-0" />
                 )}
               </div>
+
+              {zone.isLive === true && (
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase bg-[#10B981]/20 text-[#10B981] border border-[#10B981]/40 w-fit">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] animate-pulse" />
+                  LIVE
+                </span>
+              )}
 
               <div className="space-y-1 pt-1 border-t border-[#2A303D]/60 text-[11px]">
                 <div className="text-[#8E95A5] truncate">{zone.disasterType}</div>
