@@ -4,9 +4,9 @@ export interface SocialGatheringHotspot {
   id: string;
   name: string;
   category: 'Bazar / Open Market' | 'Shopping Mall / Commercial Hub' | 'Public Park / Gathering Ground' | 'Transit Hub / Railway Station';
-  distanceKm: number; // Distance from hazard origin point
-  coordinates: [number, number]; // [lat, lng]
-  peakCrowdEstimate: string; // e.g. "~16,500 Shoppers & Vendors"
+  distanceKm: number;
+  coordinates: [number, number];
+  peakCrowdEstimate: string;
   riskPriority: 'CRITICAL HIGH-DENSITY ALERT' | 'URGENT EVACUATION WARNING';
   evacuationDirective: string;
 }
@@ -14,13 +14,14 @@ export interface SocialGatheringHotspot {
 export interface HazardZone {
   id: string;
   name: string;
-  targetTownVillage: string; // Specific town / village / ward (e.g. "Bail Bazar & Kranti Nagar Ward")
-  subDistrictDistrict: string; // Taluka & District (e.g. "Kurla Sub-District, Mumbai Suburban")
+  isLive?: boolean;
+  targetTownVillage: string;
+  subDistrictDistrict: string;
   stateRegion: string;
   disasterType: 'Flash Flood' | 'Landslide' | 'Cyclone Surge' | 'Wildfire' | 'Micro-Seismic';
   riskLevel: 'Low' | 'Medium' | 'High';
-  confidencePercentage: number; // e.g. 20, 50, 90
-  coordinates: [number, number]; // Primary Origin [lat, lng]
+  confidencePercentage: number;
+  coordinates: [number, number];
   epicenterFocalPoint: string;
   historicalPatternMatch: string;
   primaryAnomalyDriver: string;
@@ -310,9 +311,71 @@ export async function fetchHazardZones(): Promise<HazardZone[]> {
   return Promise.resolve(INDIA_HAZARD_ZONES);
 }
 
+const BACKEND_URL = 'http://127.0.0.1:8001';
+
+interface BackendInsight {
+  id: number;
+  source_id: number;
+  title: string;
+  summary: string;
+  reliability_score: number;
+  consistency_score: number;
+  confidence_score: number;
+  explanation: string;
+  created_at: string;
+}
+
+function mapInsightToHazardZone(insight: BackendInsight): HazardZone {
+  const riskLevel: 'Low' | 'Medium' | 'High' =
+    insight.confidence_score >= 70 ? 'High' :
+    insight.confidence_score >= 40 ? 'Medium' : 'Low';
+
+  return {
+    id: `LIVE-${insight.id}`,
+    name: insight.title,
+    isLive: true,
+    targetTownVillage: 'Not available (no reverse-geocoding source connected)',
+    subDistrictDistrict: 'Not available (no reverse-geocoding source connected)',
+    stateRegion: 'Not available (no reverse-geocoding source connected)',
+    disasterType: 'Flash Flood',
+    riskLevel,
+    confidencePercentage: Math.round(insight.confidence_score),
+    coordinates: [0, 0],
+    epicenterFocalPoint: insight.summary,
+    historicalPatternMatch: 'Not available (no historical pattern-match source connected)',
+    primaryAnomalyDriver: 'Not available (no anomaly-driver source connected)',
+    satelliteRadarSig: 'Not available (no satellite data source connected)',
+    weatherCorrelation: 'Not available (no weather data source connected)',
+    topographyFactor: 'Not available (no topography data source connected)',
+    citizenAlertStatus: insight.confidence_score < 50 ? 'Active Alert Issued' : 'Monitoring Only',
+    affectedPopulationEstimate: 'Not available (no demographic data source connected)',
+    xaiReasoning: insight.explanation,
+    socialGatheringHotspots: [],
+  };
+}
+
+export async function fetchLiveHazardZones(): Promise<HazardZone[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/insights`);
+    if (!res.ok) return [];
+    const data: BackendInsight[] = await res.json();
+    return data.map(mapInsightToHazardZone);
+  } catch {
+    return [];
+  }
+}
+
+export async function fetchAllHazardZones(): Promise<HazardZone[]> {
+  const [mockZones, liveZones] = await Promise.all([
+    fetchHazardZones(),
+    fetchLiveHazardZones(),
+  ]);
+  return [...liveZones, ...mockZones];
+}
+
 export async function detectUserLocationAndCheckSurroundingHazards(): Promise<UserLocationHazardAssessment> {
   return new Promise((resolve) => {
-    const defaultCoords: [number, number] = [19.0760, 72.8777]; // Mumbai Sector
+    const defaultCoords: [number, number] = [19.0760, 72.8777];
     const findNearestAndAssess = (lat: number, lng: number, locName: string) => {
       let minDistance = Infinity;
       let nearest = INDIA_HAZARD_ZONES[0];
