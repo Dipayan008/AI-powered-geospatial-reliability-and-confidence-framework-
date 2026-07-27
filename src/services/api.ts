@@ -306,6 +306,55 @@ export const INDIA_HAZARD_ZONES: HazardZone[] = [
     ],
   }
 ];
+function mapAnalyzeLiveToHazard(data: any): HazardZone {
+  const riskLevel: "Low" | "Medium" | "High" =
+    data.confidence_score >= 70
+      ? "High"
+      : data.confidence_score >= 40
+      ? "Medium"
+      : "Low";
+
+  return {
+    id: "LIVE-001",
+    name: data.event,
+    isLive: true,
+
+    targetTownVillage: "Detected Location",
+    subDistrictDistrict: "Unknown",
+    stateRegion: "Unknown",
+
+    disasterType: "Flash Flood",
+
+    riskLevel,
+    confidencePercentage: data.confidence_score,
+
+    coordinates: [data.location[0], data.location[1]],
+
+    epicenterFocalPoint: data.event,
+    historicalPatternMatch: "Live AI Analysis",
+
+    primaryAnomalyDriver: data.contributing_sources.join(", "),
+
+    satelliteRadarSig: JSON.stringify(data.sources_fetched),
+
+    weatherCorrelation: data.sources_fetched.weather
+      ? "Weather Connected"
+      : "Weather Unavailable",
+
+    topographyFactor: "Not Available",
+
+    citizenAlertStatus:
+      data.alert === "Low Alert"
+        ? "Monitoring Only"
+        : "Active Alert Issued",
+
+    affectedPopulationEstimate: "Unknown",
+
+    xaiReasoning: data.explanation,
+
+    socialGatheringHotspots: [],
+  };
+}
 
 export async function fetchHazardZones(): Promise<HazardZone[]> {
   const lat = 19.0760;
@@ -319,12 +368,11 @@ const response = await fetch(
     throw new Error("Failed to fetch hazard data");
   }
 
-  const data = await response.json();
+ const data = await response.json();
 
-  console.log(data);
+console.log(data);
 
-  // Keep returning the mock data for now so the UI doesn't break
-  return INDIA_HAZARD_ZONES;
+return [mapAnalyzeLiveToHazard(data)];
 }
 
 const BACKEND_URL = 'http://127.0.0.1:8001';
@@ -382,11 +430,7 @@ export async function fetchLiveHazardZones(): Promise<HazardZone[]> {
 }
 
 export async function fetchAllHazardZones(): Promise<HazardZone[]> {
-  const [mockZones, liveZones] = await Promise.all([
-    fetchHazardZones(),
-    fetchLiveHazardZones(),
-  ]);
-  return [...liveZones, ...mockZones];
+  return await fetchHazardZones();
 }
 
 export async function detectUserLocationAndCheckSurroundingHazards(): Promise<UserLocationHazardAssessment> {
