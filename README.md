@@ -1,94 +1,40 @@
-# AI-powered-geospatial-reliability-and-confidence-framework-
-# 🌍 GeoTrust AI
-### *Building Trust in Geospatial Intelligence through Artificial Intelligence*
+## Quick start
 
-GeoTrust AI is an AI-powered geospatial intelligence platform developed for the **Emerging Technologies Hackathon 2026** under **Problem Statement PS07**.
-
-The platform evaluates the **reliability, consistency, and confidence** of geospatial insights by combining data from multiple trusted sources such as satellite imagery, weather APIs, digital maps, and user-generated reports. Instead of relying on a single source, GeoTrust AI cross-verifies information, detects inconsistencies, assigns a confidence score, and provides an AI-generated explanation to help users make informed decisions.
-
-Whether it's monitoring floods, wildfires, urban infrastructure, or environmental changes, GeoTrust AI transforms fragmented geospatial data into reliable, explainable, and actionable intelligence.
-
----
-
-## 🚀 Features
-
-- 🛰️ Multi-source geospatial data integration
-- 🌦️ Live weather data analysis
-- 🗺️ Interactive GIS dashboard
-- 🤖 AI-powered confidence scoring engine
-- 💡 Explainable AI insights
-- 📊 Real-time analytics and visualization
-- 🚨 Smart alert generation
-- 📍 Location-based monitoring
-
----
-
-## 🏗️ System Workflow
-
-```
-Satellite Images
-        │
-Weather APIs
-        │
-OpenStreetMap
-        │
-User Reports
-        ▼
-Data Collection & Preprocessing
-        ▼
-AI Confidence Engine
-        ▼
-Reliability Score + AI Explanation
-        ▼
-Interactive Dashboard
+**AI engine only (no server, quick sanity check):**
+```bash
+pip install -r requirements.txt
+python test_demo.py
 ```
 
----
+**Full backend (DB + API + real AI scoring):**
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn main:app --reload --port 8001
+```
 
-## 🛠️ Tech Stack
+Then in another terminal, ingest a source and generate an insight:
+```bash
+curl -X POST http://127.0.0.1:8001/sources \
+     -H "Content-Type: application/json" \
+     -d '{"name":"Test","source_type":"citizen_report","raw_content":"Heavy flooding reported","latitude":22.57,"longitude":88.36}'
 
-### Frontend
-- Next.js
-- React
-- Tailwind CSS
-- Leaflet
+curl -X POST "http://127.0.0.1:8001/insights/generate?title=Test&summary=Test%20run" \
+     -H "Content-Type: application/json" \
+     -d '[1]'
+```
 
-### Backend
-- FastAPI
-- Python
-- SQLAlchemy
+**Frontend:**
+```bash
+npm install
+npm run dev
+```
 
-### Database
-- PostgreSQL
-- PostGIS
+## Running tests
 
-### AI & Geospatial
-- Google Gemini API
-- Sentinel-2
-- OpenWeather API
-- OpenStreetMap
+```bash
+pip install -r requirements-dev.txt
+pytest tests/ -v
+```
 
----
-
-## 🎯 Use Cases
-
-- 🌊 Flood Monitoring
-- 🔥 Wildfire Detection
-- 🌱 Environmental Monitoring
-- 🚑 Emergency Response
-- 🏙️ Smart Cities
-- 🌾 Agriculture Analytics
-
----
-
-## 👥 Team
-
-Built with ❤️ by Team **GeoTrust AI** for the **Emerging Technologies Hackathon 2026**.
-
----
-
-## 📌 Vision
-
-> **"From Data to Decisions, with Confidence."**
-
-GeoTrust AI aims to make geospatial intelligence more transparent, trustworthy, and explainable by enabling decision-makers to act with confidence using AI-powered insights.
+Covers: multi-source corroboration, conflicting-source detection, weak-single-source handling, empty-input safety, and multi-event clustering.
