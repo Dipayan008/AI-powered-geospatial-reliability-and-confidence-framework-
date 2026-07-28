@@ -5,7 +5,7 @@ import time
 BASE_URL = "https://ai-powered-geospatial-reliability-and-1mxp.onrender.com"
 
 df = pd.read_csv("landslides_india_clean.csv")
-df = df.head(10)  # start with 10 as a test batch
+df = df.head(1)  # start with 10 as a test batch
 
 for _, row in df.iterrows():
     source_payload = {
