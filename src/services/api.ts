@@ -1,5 +1,5 @@
 ﻿// Streamlined Data Layer for PS07 India Geospatial AI Pattern Recognition & Hazard Intelligence
-
+// v2 - forcing rebuild
 export interface SocialGatheringHotspot {
   id: string;
   name: string;
@@ -328,6 +328,16 @@ interface BackendInsight {
   state?: string | null;
   created_at: string;
 }
+function inferDisasterType(title: string): HazardZone['disasterType'] {
+  const t = title.toLowerCase();
+  if (t.includes('earthquake')) return 'Micro-Seismic';
+  if (t.includes('landslide')) return 'Landslide';
+  if (t.includes('flood')) return 'Flash Flood';
+  if (t.includes('cyclone')) return 'Cyclone Surge';
+  if (t.includes('wildfire') || t.includes('fire')) return 'Wildfire';
+  return 'Flash Flood'; // fallback default
+}
+
 
 function mapInsightToHazardZone(insight: BackendInsight): HazardZone {
   const riskLevel: 'Low' | 'Medium' | 'High' =
@@ -341,7 +351,7 @@ function mapInsightToHazardZone(insight: BackendInsight): HazardZone {
     targetTownVillage: insight.town_village ?? 'Not available (no reverse-geocoding source connected)',
     subDistrictDistrict: insight.district ?? 'Not available (no reverse-geocoding source connected)',
     stateRegion: insight.state ?? 'Not available (no reverse-geocoding source connected)',
-    disasterType: 'Flash Flood',
+    disasterType: inferDisasterType(insight.title),
     riskLevel,
     confidencePercentage: Math.round(insight.confidence_score),
     coordinates: [insight.latitude ?? 0, insight.longitude ?? 0],
