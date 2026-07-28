@@ -118,6 +118,41 @@ def get_insight(insight_id: int, db: Session = Depends(get_db)):
     return insight
 
 
+@app.delete("/insights/{insight_id}")
+def delete_insight(insight_id: int, db: Session = Depends(get_db)):
+    insight = db.query(models.Insight).filter(models.Insight.id == insight_id).first()
+    if not insight:
+        raise HTTPException(status_code=404, detail="Insight not found")
+
+    # Delete any alerts tied to this insight first (foreign key safety)
+    db.query(models.Alert).filter(models.Alert.insight_id == insight_id).delete()
+
+    db.delete(insight)
+    db.commit()
+    return {"deleted": True, "insight_id": insight_id}
+
+
+@app.delete("/insights/cleanup/zero-score")
+def delete_zero_score_insights(db: Session = Depends(get_db)):
+    bad_insights = db.query(models.Insight).filter(
+        models.Insight.reliability_score == 0,
+        models.Insight.consistency_score == 0,
+        models.Insight.confidence_score == 0,
+    ).all()
+
+    deleted_ids = []
+    for insight in bad_insights:
+        db.query(models.Alert).filter(models.Alert.insight_id == insight.id).delete()
+        db.delete(insight)
+        deleted_ids.append(insight.id)
+
+    db.commit()
+    return {"deleted_count": len(deleted_ids), "deleted_ids": deleted_ids}
+
+
+
+
+
 @app.get("/compare")
 def compare_sources(source_ids: str, db: Session = Depends(get_db)):
     ids = [int(i) for i in source_ids.split(",") if i.strip().isdigit()]
