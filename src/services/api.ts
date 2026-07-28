@@ -1,4 +1,4 @@
-// Streamlined Data Layer for PS07 India Geospatial AI Pattern Recognition & Hazard Intelligence
+﻿// Streamlined Data Layer for PS07 India Geospatial AI Pattern Recognition & Hazard Intelligence
 
 export interface SocialGatheringHotspot {
   id: string;
@@ -51,7 +51,6 @@ export interface UserLocationHazardAssessment {
   isDangerDetected: boolean;
 }
 
-// Pre-structured mock dataset with localized small town & village focal points & surrounding social gathering hotspots across India
 export const INDIA_HAZARD_ZONES: HazardZone[] = [
   {
     id: 'HAZ-IND-01',
@@ -306,73 +305,9 @@ export const INDIA_HAZARD_ZONES: HazardZone[] = [
     ],
   }
 ];
-function mapAnalyzeLiveToHazard(data: any): HazardZone {
-  const riskLevel: "Low" | "Medium" | "High" =
-    data.confidence_score >= 70
-      ? "High"
-      : data.confidence_score >= 40
-      ? "Medium"
-      : "Low";
-
-  return {
-    id: "LIVE-001",
-    name: data.event,
-    isLive: true,
-
-    targetTownVillage: "Detected Location",
-    subDistrictDistrict: "Unknown",
-    stateRegion: "Unknown",
-
-    disasterType: "Flash Flood",
-
-    riskLevel,
-    confidencePercentage: data.confidence_score,
-
-    coordinates: [data.location[0], data.location[1]],
-
-    epicenterFocalPoint: data.event,
-    historicalPatternMatch: "Live AI Analysis",
-
-    primaryAnomalyDriver: data.contributing_sources.join(", "),
-
-    satelliteRadarSig: JSON.stringify(data.sources_fetched),
-
-    weatherCorrelation: data.sources_fetched.weather
-      ? "Weather Connected"
-      : "Weather Unavailable",
-
-    topographyFactor: "Not Available",
-
-    citizenAlertStatus:
-      data.alert === "Low Alert"
-        ? "Monitoring Only"
-        : "Active Alert Issued",
-
-    affectedPopulationEstimate: "Unknown",
-
-    xaiReasoning: data.explanation,
-
-    socialGatheringHotspots: [],
-  };
-}
 
 export async function fetchHazardZones(): Promise<HazardZone[]> {
-  const lat = 19.0760;
-const lon = 72.8777;
-
-const response = await fetch(
-  `http://127.0.0.1:8000/analyze-live?lat=${lat}&lon=${lon}`
-);
-
-  if (!response.ok) {
-    throw new Error("Failed to fetch hazard data");
-  }
-
- const data = await response.json();
-
-console.log(data);
-
-return [mapAnalyzeLiveToHazard(data)];
+  return Promise.resolve(INDIA_HAZARD_ZONES);
 }
 
 const BACKEND_URL = 'http://127.0.0.1:8001';
@@ -386,6 +321,11 @@ interface BackendInsight {
   consistency_score: number;
   confidence_score: number;
   explanation: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  town_village?: string | null;
+  district?: string | null;
+  state?: string | null;
   created_at: string;
 }
 
@@ -398,13 +338,13 @@ function mapInsightToHazardZone(insight: BackendInsight): HazardZone {
     id: `LIVE-${insight.id}`,
     name: insight.title,
     isLive: true,
-    targetTownVillage: 'Not available (no reverse-geocoding source connected)',
-    subDistrictDistrict: 'Not available (no reverse-geocoding source connected)',
-    stateRegion: 'Not available (no reverse-geocoding source connected)',
+    targetTownVillage: insight.town_village ?? 'Not available (no reverse-geocoding source connected)',
+    subDistrictDistrict: insight.district ?? 'Not available (no reverse-geocoding source connected)',
+    stateRegion: insight.state ?? 'Not available (no reverse-geocoding source connected)',
     disasterType: 'Flash Flood',
     riskLevel,
     confidencePercentage: Math.round(insight.confidence_score),
-    coordinates: [0, 0],
+    coordinates: [insight.latitude ?? 0, insight.longitude ?? 0],
     epicenterFocalPoint: insight.summary,
     historicalPatternMatch: 'Not available (no historical pattern-match source connected)',
     primaryAnomalyDriver: 'Not available (no anomaly-driver source connected)',
@@ -430,7 +370,11 @@ export async function fetchLiveHazardZones(): Promise<HazardZone[]> {
 }
 
 export async function fetchAllHazardZones(): Promise<HazardZone[]> {
-  return await fetchHazardZones();
+  const [mockZones, liveZones] = await Promise.all([
+    fetchHazardZones(),
+    fetchLiveHazardZones(),
+  ]);
+  return [...liveZones, ...mockZones];
 }
 
 export async function detectUserLocationAndCheckSurroundingHazards(): Promise<UserLocationHazardAssessment> {
