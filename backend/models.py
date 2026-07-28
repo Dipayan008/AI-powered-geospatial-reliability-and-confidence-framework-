@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, Text, DateTime, ForeignKey
+﻿from sqlalchemy import Column, Integer, String, Float, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -9,9 +9,9 @@ class DataSource(Base):
     __tablename__ = "data_sources"
 
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, nullable=False)          # e.g. "Sentinel-2", "OpenWeatherMap"
-    source_type = Column(String, nullable=False)    # satellite | weather | osm | news | user_report
-    raw_content = Column(Text, nullable=False)       # text/JSON payload of the insight
+    name = Column(String, nullable=False)
+    source_type = Column(String, nullable=False)
+    raw_content = Column(Text, nullable=False)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
     fetched_at = Column(DateTime, default=datetime.utcnow)
@@ -27,10 +27,15 @@ class Insight(Base):
     source_id = Column(Integer, ForeignKey("data_sources.id"))
     title = Column(String, nullable=False)
     summary = Column(Text, nullable=False)
-    reliability_score = Column(Float, default=0.0)     # 0-100
-    consistency_score = Column(Float, default=0.0)      # 0-100
-    confidence_score = Column(Float, default=0.0)        # 0-100 (final combined score)
-    explanation = Column(Text, nullable=True)             # LLM-generated "why" explanation
+    reliability_score = Column(Float, default=0.0)
+    consistency_score = Column(Float, default=0.0)
+    confidence_score = Column(Float, default=0.0)
+    explanation = Column(Text, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    town_village = Column(String, nullable=True)
+    district = Column(String, nullable=True)
+    state = Column(String, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     source = relationship("DataSource", back_populates="insights")
@@ -43,5 +48,5 @@ class Alert(Base):
     id = Column(Integer, primary_key=True, index=True)
     insight_id = Column(Integer, ForeignKey("insights.id"), nullable=True)
     message = Column(Text, nullable=False)
-    severity = Column(String, default="info")   # info | warning | critical
+    severity = Column(String, default="info")
     created_at = Column(DateTime, default=datetime.utcnow)

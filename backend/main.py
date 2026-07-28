@@ -48,6 +48,23 @@ def get_source(source_id: int, db: Session = Depends(get_db)):
     return source
 
 
+def _first_location(sources):
+    for s in sources:
+        if s.latitude is not None and s.longitude is not None:
+            return s.latitude, s.longitude
+    return None, None
+
+
+def _geocode_fields(lat, lon):
+    """Returns (town_village, district, state) tuple, all None if unavailable."""
+    if lat is None or lon is None:
+        return None, None, None
+    place = ingestion.reverse_geocode_safe(lat, lon)
+    if not place:
+        return None, None, None
+    return place.get("town_village"), place.get("district"), place.get("state")
+
+
 @app.post("/insights/generate", response_model=schemas.InsightOut)
 def generate_insight(title: str, summary: str, source_ids: List[int], db: Session = Depends(get_db)):
     sources = db.query(models.DataSource).filter(models.DataSource.id.in_(source_ids)).all()
@@ -55,6 +72,8 @@ def generate_insight(title: str, summary: str, source_ids: List[int], db: Sessio
         raise HTTPException(status_code=404, detail="No matching sources found")
 
     scores = ingestion.score_sources(sources)
+    lat, lon = _first_location(sources)
+    town, district, state = _geocode_fields(lat, lon)
 
     insight = models.Insight(
         source_id=sources[0].id,
@@ -64,6 +83,11 @@ def generate_insight(title: str, summary: str, source_ids: List[int], db: Sessio
         consistency_score=scores["consistency_score"],
         confidence_score=scores["confidence_score"],
         explanation=scores["explanation"],
+        latitude=lat,
+        longitude=lon,
+        town_village=town,
+        district=district,
+        state=state,
     )
     db.add(insight)
     db.commit()
@@ -146,6 +170,8 @@ def analyze(request: AnalyzeRequest, db: Session = Depends(get_db)):
         for obs in request.observations
     ]
     scores = ingestion.score_sources(stored_sources)
+    lat, lon = _first_location(stored_sources)
+    town, district, state = _geocode_fields(lat, lon)
 
     insight = models.Insight(
         source_id=stored_sources[0].id,
@@ -155,6 +181,11 @@ def analyze(request: AnalyzeRequest, db: Session = Depends(get_db)):
         consistency_score=scores["consistency_score"],
         confidence_score=scores["confidence_score"],
         explanation=scores["explanation"],
+        latitude=lat,
+        longitude=lon,
+        town_village=town,
+        district=district,
+        state=state,
     )
     db.add(insight)
     db.commit()
@@ -194,13 +225,6 @@ def analyze_live(source_ids: str, db: Session = Depends(get_db)):
 
 @app.post("/analyze-location")
 def analyze_location(lat: float, lon: float, title: str, summary: str, db: Session = Depends(get_db)):
-    """
-    Fetches REAL live data for a location from OpenWeather, OpenStreetMap,
-    and Sentinel-2 satellite imagery (NDWI water-index signal), stores each
-    as a DataSource, scores them through the real AI confidence engine, and
-    returns the resulting insight. Any adapter that fails (bad key, rate
-    limit, no signal) is silently skipped rather than crashing the request.
-    """
     stored_sources = []
 
     weather_obs = ingestion.fetch_live_weather_safe(lat, lon)
@@ -228,6 +252,7 @@ def analyze_location(lat: float, lon: float, title: str, summary: str, db: Sessi
         )
 
     scores = ingestion.score_sources(stored_sources)
+    town, district, state = _geocode_fields(lat, lon)
 
     insight = models.Insight(
         source_id=stored_sources[0].id,
@@ -237,6 +262,11 @@ def analyze_location(lat: float, lon: float, title: str, summary: str, db: Sessi
         consistency_score=scores["consistency_score"],
         confidence_score=scores["confidence_score"],
         explanation=scores["explanation"],
+        latitude=lat,
+        longitude=lon,
+        town_village=town,
+        district=district,
+        state=state,
     )
     db.add(insight)
     db.commit()
@@ -256,6 +286,11 @@ def analyze_location(lat: float, lon: float, title: str, summary: str, db: Sessi
             "weather": weather_obs is not None,
             "osm": osm_obs is not None,
             "satellite": sentinel_obs is not None,
+        },
+        "location": {
+            "town_village": town,
+            "district": district,
+            "state": state,
         },
         "reliability_score": insight.reliability_score,
         "consistency_score": insight.consistency_score,

@@ -10,6 +10,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from sqlalchemy.orm import Session
 import models
+import requests
 
 try:
     from ai.model import run_confidence_pipeline
@@ -46,13 +47,46 @@ def fetch_live_osm_safe(lat: float, lon: float):
 
 def fetch_live_sentinel_safe(lat: float, lon: float):
     if not LIVE_ADAPTERS_AVAILABLE:
-        print("DEBUG: LIVE_ADAPTERS_AVAILABLE is False")
         return None
+    return fetch_sentinel_observation_safe(lat, lon)
+
+
+def reverse_geocode_safe(lat: float, lon: float, timeout: float = 10.0):
+    """
+    Reverse-geocodes a lat/lon into town/district/state names using
+    OpenStreetMap's free Nominatim API (no API key required).
+    Returns None on any failure (network error, rate limit, no results)
+    rather than raising, so a geocoding hiccup never breaks an insight.
+    """
     try:
-        from ai.adapters.sentinel import fetch_sentinel_observation
-        return fetch_sentinel_observation(lat, lon)
-    except Exception as e:
-        print(f"DEBUG SENTINEL REAL ERROR: {type(e).__name__} - {e}")
+        response = requests.get(
+            "https://nominatim.openstreetmap.org/reverse",
+            params={"lat": lat, "lon": lon, "format": "json"},
+            headers={"User-Agent": "PS07-GeoAI-Hackathon-Project"},
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        data = response.json()
+        address = data.get("address", {})
+
+        town = (
+            address.get("city")
+            or address.get("town")
+            or address.get("village")
+            or address.get("suburb")
+        )
+        district = address.get("state_district") or address.get("county")
+        state = address.get("state")
+
+        if not any([town, district, state]):
+            return None
+
+        return {
+            "town_village": town,
+            "district": district,
+            "state": state,
+        }
+    except Exception:
         return None
 
 
