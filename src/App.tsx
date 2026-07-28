@@ -7,7 +7,7 @@ import { ActiveRegionsGrid } from './components/ActiveRegionsGrid';
 import { CitizenAlertModal } from './components/CitizenAlertModal';
 import { InitialGeolocationAlertModal } from './components/InitialGeolocationAlertModal';
 import type { HazardZone, UserLocationHazardAssessment } from './services/api';
-import { fetchAllHazardZones, detectUserLocationAndCheckSurroundingHazards } from './services/api';
+import { fetchAllHazardZones, detectUserLocationAndCheckSurroundingHazards, INDIA_HAZARD_ZONES } from './services/api';
 
 export function App() {
   const [hazards, setHazards] = useState<HazardZone[]>([]);
@@ -19,12 +19,20 @@ export function App() {
   const [isGeoModalOpen, setIsGeoModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchAllHazardZones().then((res) => {
-      setHazards(res);
-      if (res.length > 0) {
-        setSelectedZone(res[0]); // Default to first hazard
-      }
-    });
+    fetchAllHazardZones()
+      .then((res) => {
+        setHazards(res);
+        if (res.length > 0) {
+          setSelectedZone(res[0]); // Default to first hazard
+        }
+      })
+      .catch(() => {
+        // Never leave the list stuck empty — always show at least the demo zones.
+        setHazards(INDIA_HAZARD_ZONES);
+        if (INDIA_HAZARD_ZONES.length > 0) {
+          setSelectedZone(INDIA_HAZARD_ZONES[0]);
+        }
+      });
 
     // Run Initial Geolocation Detection & Surrounding Hazard Check
     detectUserLocationAndCheckSurroundingHazards().then((assessment) => {

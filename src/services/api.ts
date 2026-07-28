@@ -430,7 +430,25 @@ export async function fetchLiveHazardZones(): Promise<HazardZone[]> {
 }
 
 export async function fetchAllHazardZones(): Promise<HazardZone[]> {
-  return await fetchHazardZones();
+  // fetchHazardZones() depends on a root AI server at :8000/analyze-live
+  // that this repo no longer runs (root main.py was removed). If that
+  // call fails, don't leave the hazard list empty forever — fall back to
+  // the bundled demo zones plus whatever real insights the :8001 backend
+  // actually has (that server does work, we've verified it end-to-end).
+  let liveAnalyzeZones: HazardZone[] = [];
+  try {
+    liveAnalyzeZones = await fetchHazardZones();
+  } catch {
+    liveAnalyzeZones = [];
+  }
+
+  const liveInsightZones = await fetchLiveHazardZones();
+
+  if (liveAnalyzeZones.length === 0 && liveInsightZones.length === 0) {
+    return INDIA_HAZARD_ZONES;
+  }
+
+  return [...liveAnalyzeZones, ...liveInsightZones, ...INDIA_HAZARD_ZONES];
 }
 
 export async function detectUserLocationAndCheckSurroundingHazards(): Promise<UserLocationHazardAssessment> {
