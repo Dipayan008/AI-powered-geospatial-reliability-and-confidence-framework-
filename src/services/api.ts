@@ -310,7 +310,7 @@ export async function fetchHazardZones(): Promise<HazardZone[]> {
   return Promise.resolve(INDIA_HAZARD_ZONES);
 }
 
-const BACKEND_URL = 'http://127.0.0.1:8001';
+const BACKEND_URL = 'https://ai-powered-geospatial-reliability-and-1mxp.onrender.com';
 
 interface BackendInsight {
   id: number;

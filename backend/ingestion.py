@@ -9,6 +9,14 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from sqlalchemy.orm import Session
+import os
+import json
+from dotenv import load_dotenv
+import google.generativeai as genai
+
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+model = genai.GenerativeModel("gemini-flash-latest")
 import models
 import requests
 
@@ -113,59 +121,50 @@ def ingest_source(db: Session, name: str, source_type: str, raw_content: str,
     return source
 
 
-_SOURCE_TYPE_MAP = {
-    "satellite": "satellite",
-    "weather": "weather",
-    "osm": "osm",
-    "user_report": "user_report",
-    "citizen_report": "user_report",
-    "news": "news",
-}
+def fake_ai_score(sources_text: list[str]) -> dict:
+    """
+    Calls Gemini to assess reliability/consistency of the given sources.
+    Keeps the same return shape as the original placeholder so nothing
+    downstream (main.py, etc.) needs to change.
+    """
+    count = len(sources_text)
+    joined_sources = "\n---\n".join(sources_text)
 
+    prompt = f"""
+You are assessing the reliability of {count} disaster/hazard report(s) below.
+Sources:
+{joined_sources}
 
-def _map_source_type(source_type: str) -> str:
-    return _SOURCE_TYPE_MAP.get(source_type.strip().lower(), "user_report")
+Return ONLY a JSON object with these exact keys, no other text:
+{{
+  "reliability_score": <number 0-100>,
+  "consistency_score": <number 0-100>,
+  "confidence_score": <number 0-100>,
+  "explanation": "<short explanation of the score>"
+}}
+"""
 
-
-def score_sources(sources):
-    if AI_AVAILABLE:
-        raw_inputs = []
-        for s in sources:
-            obs = {
-                "source": _map_source_type(s.source_type),
-                "signal": s.raw_content,
-            }
-            if s.latitude is not None and s.longitude is not None:
-                obs["location"] = [s.latitude, s.longitude]
-            raw_inputs.append(obs)
-
-        result = run_confidence_pipeline(raw_inputs)
-        data = result.to_dict()
-
-        reliability_map = {"Low": 40, "Medium": 60, "High": 80, "Very High": 95}
-        reliability_score = reliability_map.get(data["reliability"], 50)
-
-        total = len(data["contributing_sources"]) + len(data["conflicting_sources"])
-        consistency_score = (
-            round(100 * len(data["contributing_sources"]) / total, 1)
-            if total else data["confidence_score"]
-        )
-
+    try:
+        response = model.generate_content(prompt)
+        raw = response.text.strip()
+        # Strip markdown code fences if Gemini wraps the JSON in ```json ... ```
+        raw = raw.replace("```json", "").replace("```", "").strip()
+        result = json.loads(raw)
+        return result
+    except Exception as e:
+        # Fallback so the pipeline never crashes if the API call fails
         return {
-            "reliability_score": reliability_score,
-            "consistency_score": consistency_score,
-            "confidence_score": data["confidence_score"],
-            "explanation": data["explanation"],
+            "reliability_score": 0,
+            "consistency_score": 0,
+            "confidence_score": 0,
+            "explanation": f"AI scoring failed: {str(e)}",
         }
 
-    count = len(sources)
-    reliability = min(100, 60 + count * 5)
-    consistency = min(100, 55 + count * 7)
-    confidence = round((reliability + consistency) / 2, 1)
-    explanation = "Score derived from " + str(count) + " source(s). Placeholder logic, AI module not found."
-    return {
-        "reliability_score": reliability,
-        "consistency_score": consistency,
-        "confidence_score": confidence,
-        "explanation": explanation,
-    }
+def score_sources(sources) -> dict:
+    """
+    Adapter for main.py, which expects a `score_sources(sources)` function.
+    `sources` here are DataSource model objects (from the database),
+    not raw strings — so we pull out their text content first.
+    """
+    texts = [s.raw_content for s in sources]
+    return fake_ai_score(texts)
