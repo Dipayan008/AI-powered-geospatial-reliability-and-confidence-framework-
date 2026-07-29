@@ -25,9 +25,9 @@ dist-ssr
 # Python
 __pycache__/
 *.pyc
+.env
 
 # Database
 backend/geoai.db
 .env
-server*.log
 server*.log
