@@ -4,6 +4,7 @@ import { IndiaHazardMap } from './components/IndiaHazardMap';
 import { PatternConfidenceScorecard } from './components/PatternConfidenceScorecard';
 import { XAIPatternRecognitionPanel } from './components/XAIPatternRecognitionPanel';
 import { ActiveRegionsGrid } from './components/ActiveRegionsGrid';
+import { LiveInsightFeed } from './components/LiveInsightFeed';
 import { CitizenAlertModal } from './components/CitizenAlertModal';
 import { InitialGeolocationAlertModal } from './components/InitialGeolocationAlertModal';
 import type { HazardZone, UserLocationHazardAssessment } from './services/api';
@@ -92,6 +93,11 @@ export function App() {
           <div className="w-full">
             <XAIPatternRecognitionPanel selectedZone={selectedZone} />
           </div>
+        </section>
+
+        {/* Live Insight Feed: real backend-scored insights, most recent first */}
+        <section className="w-full">
+          <LiveInsightFeed />
         </section>
 
         {/* Full-Width Bottom Section: Active Monitored Hazard Regions Grid */}

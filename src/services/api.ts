@@ -312,7 +312,7 @@ export async function fetchHazardZones(): Promise<HazardZone[]> {
 
 const BACKEND_URL = 'https://ai-powered-geospatial-reliability-and-1mxp.onrender.com';
 
-interface BackendInsight {
+export interface BackendInsight {
   id: number;
   source_id: number;
   title: string;
@@ -374,6 +374,21 @@ export async function fetchLiveHazardZones(): Promise<HazardZone[]> {
     if (!res.ok) return [];
     const data: BackendInsight[] = await res.json();
     return data.map(mapInsightToHazardZone);
+  } catch {
+    return [];
+  }
+}
+
+/** Raw insights, most recent first — used by the live feed timeline, which
+ *  needs created_at and hasn't been reshaped into a map-pin's HazardZone shape. */
+export async function fetchRawInsights(): Promise<BackendInsight[]> {
+  try {
+    const res = await fetch(`${BACKEND_URL}/insights`);
+    if (!res.ok) return [];
+    const data: BackendInsight[] = await res.json();
+    return [...data].sort(
+      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
   } catch {
     return [];
   }
