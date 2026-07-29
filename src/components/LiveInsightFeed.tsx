@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Radio, RefreshCw } from 'lucide-react';
 import { fetchRawInsights, type BackendInsight } from '../services/api';
 
-function relativeTime(iso: string): string {
+function loggedTimeAgo(iso: string): string {
   const diffMs = Date.now() - new Date(iso).getTime();
   const diffSec = Math.round(diffMs / 1000);
   if (diffSec < 5) return 'just now';
@@ -77,7 +77,7 @@ export const LiveInsightFeed: React.FC = () => {
           className="flex items-center gap-1.5 text-xs font-mono text-[#8E95A5] hover:text-[#38BDF8] transition-colors disabled:opacity-50"
         >
           <RefreshCw className={`w-3.5 h-3.5 ${isRefreshing ? 'animate-spin' : ''}`} />
-          {lastUpdated ? `Updated ${relativeTime(lastUpdated.toISOString())}` : 'Refresh'}
+          {lastUpdated ? `Updated ${loggedTimeAgo(lastUpdated.toISOString())}` : 'Refresh'}
         </button>
       </div>
 
@@ -108,8 +108,8 @@ export const LiveInsightFeed: React.FC = () => {
                   />
                   <div className="flex items-start justify-between gap-2 flex-wrap">
                     <span className="font-bold text-white text-xs">{insight.title}</span>
-                    <span className="text-[10px] font-mono text-[#8E95A5] whitespace-nowrap">
-                      {relativeTime(insight.created_at)}
+                    <span className="text-[10px] font-mono text-[#8E95A5] whitespace-nowrap" title="When this record was added to the database — not necessarily when the underlying event occurred. Check the summary below for the event's actual date.">
+                      Logged {loggedTimeAgo(insight.created_at)}
                     </span>
                   </div>
                   <div className="text-[11px] text-[#8E95A5] mt-0.5">{locationLabel(insight)}</div>
