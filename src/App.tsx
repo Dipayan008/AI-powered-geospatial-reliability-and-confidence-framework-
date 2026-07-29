@@ -13,6 +13,7 @@ export function App() {
   const [hazards, setHazards] = useState<HazardZone[]>([]);
   const [selectedZone, setSelectedZone] = useState<HazardZone | null>(null);
   const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Initial Geolocation Detection & Surrounding Hazard Check State
   const [geoAssessment, setGeoAssessment] = useState<UserLocationHazardAssessment | null>(null);
@@ -32,7 +33,8 @@ export function App() {
         if (INDIA_HAZARD_ZONES.length > 0) {
           setSelectedZone(INDIA_HAZARD_ZONES[0]);
         }
-      });
+      })
+      .finally(() => setIsLoading(false));
 
     // Run Initial Geolocation Detection & Surrounding Hazard Check
     detectUserLocationAndCheckSurroundingHazards().then((assessment) => {
@@ -58,6 +60,17 @@ export function App() {
 
       {/* Main Responsive Vertical Layout with Map on Top */}
       <main className="flex-1 px-4 sm:px-8 md:px-12 py-6 max-w-[1750px] mx-auto w-full flex flex-col space-y-8">
+        {isLoading ? (
+          <div
+            role="status"
+            aria-live="polite"
+            className="flex-1 min-h-[400px] flex flex-col items-center justify-center gap-3 font-mono text-[#8E95A5]"
+          >
+            <div className="w-10 h-10 border-2 border-[#2A303D] border-t-[#38BDF8] rounded-full animate-spin" />
+            <span className="text-xs uppercase tracking-wider">Initializing Telemetry Feed…</span>
+          </div>
+        ) : (
+        <>
         {/* Top Primary Section: India Geospatial Hazard Map */}
         <section className="w-full h-[380px] md:h-[420px] lg:h-[450px] flex flex-col">
           <IndiaHazardMap
@@ -89,6 +102,8 @@ export function App() {
             onSelectZone={(zone) => setSelectedZone(zone)}
           />
         </section>
+        </>
+        )}
       </main>
 
       {/* Footer */}
