@@ -20,6 +20,18 @@ function confidenceColor(score: number): string {
   return '#10B981';
 }
 
+const SCORING_UNAVAILABLE_PREFIX = 'AI_SCORING_UNAVAILABLE:';
+
+function isScoringUnavailable(insight: BackendInsight): boolean {
+  return insight.explanation?.startsWith(SCORING_UNAVAILABLE_PREFIX) ?? false;
+}
+
+function cleanExplanation(insight: BackendInsight): string {
+  return isScoringUnavailable(insight)
+    ? insight.explanation.replace(SCORING_UNAVAILABLE_PREFIX, '').trim()
+    : insight.explanation;
+}
+
 function locationLabel(insight: BackendInsight): string {
   const parts = [insight.town_village, insight.district, insight.state].filter(
     (p): p is string => Boolean(p)
@@ -85,12 +97,13 @@ export const LiveInsightFeed: React.FC = () => {
         ) : (
           <ol className="relative border-l border-[#2A303D] ml-1.5 space-y-5">
             {insights.slice(0, 20).map((insight) => {
+              const unavailable = isScoringUnavailable(insight);
               const color = confidenceColor(insight.confidence_score);
               return (
                 <li key={insight.id} className="ml-4">
                   <span
                     className="absolute w-2.5 h-2.5 rounded-full -left-[5px] mt-1.5 border border-[#12141C]"
-                    style={{ backgroundColor: color }}
+                    style={{ backgroundColor: unavailable ? '#64748B' : color }}
                     aria-hidden="true"
                   />
                   <div className="flex items-start justify-between gap-2 flex-wrap">
@@ -101,15 +114,21 @@ export const LiveInsightFeed: React.FC = () => {
                   </div>
                   <div className="text-[11px] text-[#8E95A5] mt-0.5">{locationLabel(insight)}</div>
                   <div className="flex items-center gap-2 mt-1.5">
-                    <span
-                      className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono uppercase border"
-                      style={{ backgroundColor: `${color}20`, color, borderColor: `${color}40` }}
-                    >
-                      {Math.round(insight.confidence_score)}% confidence
-                    </span>
+                    {unavailable ? (
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono uppercase border bg-[#64748B]/20 text-[#94A3B8] border-[#64748B]/40">
+                        Scoring unavailable
+                      </span>
+                    ) : (
+                      <span
+                        className="px-1.5 py-0.5 rounded text-[9px] font-bold font-mono uppercase border"
+                        style={{ backgroundColor: `${color}20`, color, borderColor: `${color}40` }}
+                      >
+                        {Math.round(insight.confidence_score)}% confidence
+                      </span>
+                    )}
                   </div>
                   <p className="text-[11px] text-[#8E95A5] mt-1.5 leading-relaxed line-clamp-2">
-                    {insight.explanation}
+                    {cleanExplanation(insight)}
                   </p>
                 </li>
               );

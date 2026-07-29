@@ -121,6 +121,60 @@ def ingest_source(db: Session, name: str, source_type: str, raw_content: str,
     return source
 
 
+_VALID_LOCAL_SOURCE_TYPES = {"satellite", "weather", "osm", "user_report", "news"}
+_RELIABILITY_TO_SCORE = {"Low": 25.0, "Medium": 50.0, "High": 75.0, "Very High": 95.0}
+
+
+def _normalize_source_type(source_type: str) -> str:
+    """
+    The seeded/scraped datasets use source_type to mean *disaster category*
+    ("flood", "earthquake", "landslide") rather than *reporting medium*,
+    which is what the local rule-based engine's SourceType enum expects.
+    Map anything not already a valid medium onto "news" — every one of
+    these seeded rows cites a structured dataset or news source, not a
+    live sensor feed or first-person report.
+    """
+    key = (source_type or "").strip().lower().replace(" ", "_").replace("-", "_")
+    if key in _VALID_LOCAL_SOURCE_TYPES:
+        return key
+    return "news"
+
+
+def _local_fallback_score(sources) -> dict:
+    """
+    Rule-based confidence scoring (ai/model.py) — no API key, no quota,
+    no external network call. Used when Gemini fails for any reason, so
+    a temporary or exhausted quota never actually stops real scoring
+    from happening; it just stops the LLM-written explanation from
+    happening, which is the honest trade-off to make here.
+    """
+    raw_observations = [
+        {
+            "source": _normalize_source_type(s.source_type),
+            "signal": s.raw_content,
+            "location": [s.latitude, s.longitude] if s.latitude is not None and s.longitude is not None else None,
+            "timestamp": s.fetched_at.isoformat() if getattr(s, "fetched_at", None) else None,
+        }
+        for s in sources
+    ]
+
+    result = run_confidence_pipeline(raw_observations)
+    payload = result.to_dict()
+
+    total = len(payload["contributing_sources"]) + len(payload["conflicting_sources"])
+    consistency = round(100 * len(payload["contributing_sources"]) / total, 1) if total else 0.0
+
+    return {
+        "reliability_score": _RELIABILITY_TO_SCORE.get(payload["reliability"], 0.0),
+        "consistency_score": consistency,
+        "confidence_score": payload["confidence_score"],
+        "explanation": (
+            "(Gemini unavailable — scored by local rule-based engine instead) "
+            f"{payload['explanation']}"
+        ),
+    }
+
+
 def fake_ai_score(sources_text: list[str]) -> dict:
     """
     Calls Gemini to assess reliability/consistency of the given sources.
@@ -152,19 +206,51 @@ Return ONLY a JSON object with these exact keys, no other text:
         result = json.loads(raw)
         return result
     except Exception as e:
-        # Fallback so the pipeline never crashes if the API call fails
+        # The pipeline must never crash if the Gemini call fails (rate limit,
+        # quota exhaustion, network error, malformed response, etc.) — but it
+        # also must never present that failure as if it were a real "0%,
+        # Low risk" assessment, and must never leak the raw SDK exception
+        # text (which can include quota numbers, links, internal metric
+        # names) into a citizen-facing explanation field.
+        error_str = str(e)
+        is_rate_limit = "429" in error_str or "quota" in error_str.lower()
+        reason = (
+            "the AI scoring service's request quota was reached"
+            if is_rate_limit
+            else "the AI scoring service returned an error"
+        )
         return {
             "reliability_score": 0,
             "consistency_score": 0,
             "confidence_score": 0,
-            "explanation": f"AI scoring failed: {str(e)}",
+            "explanation": (
+                f"AI_SCORING_UNAVAILABLE: Scoring could not be completed because {reason}. "
+                "This is not an assessed result — retry once the service is available."
+            ),
         }
 
 def score_sources(sources) -> dict:
     """
     Adapter for main.py, which expects a `score_sources(sources)` function.
-    `sources` here are DataSource model objects (from the database),
-    not raw strings — so we pull out their text content first.
+    `sources` here are DataSource model objects (from the database).
+
+    Tries Gemini first (richer, LLM-written explanations). If that fails
+    for any reason (rate limit, quota, network, malformed response) and
+    the local rule-based engine is available, falls back to that instead
+    of returning a fake/unavailable result — so scoring keeps working
+    even with Gemini's free-tier quota exhausted.
     """
     texts = [s.raw_content for s in sources]
-    return fake_ai_score(texts)
+    result = fake_ai_score(texts)
+
+    gemini_failed = result["explanation"].startswith("AI_SCORING_UNAVAILABLE:")
+    if gemini_failed and AI_AVAILABLE:
+        try:
+            return _local_fallback_score(sources)
+        except Exception:
+            # Local engine itself failed too (e.g. no usable observations) —
+            # surface the original honest "unavailable" result rather than
+            # a second, different failure.
+            return result
+
+    return result
