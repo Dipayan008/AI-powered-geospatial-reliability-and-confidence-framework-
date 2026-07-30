@@ -98,6 +98,44 @@ def reverse_geocode_safe(lat: float, lon: float, timeout: float = 10.0):
         return None
 
 
+_INDIAN_STATES_AND_UTS = [
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
+    "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim",
+    "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand",
+    "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
+    "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir",
+    "Ladakh", "Lakshadweep", "Puducherry",
+]
+# Longest names first so "Uttar Pradesh" doesn't get shadowed by "Uttarakhand"-style substrings.
+_INDIAN_STATES_AND_UTS.sort(key=len, reverse=True)
+
+
+def reconcile_title_with_state(title: str, state: str | None) -> str:
+    """
+    If a title names an Indian state/UT (e.g. "Assam Live Sensor Monitoring")
+    that doesn't match the reverse-geocoded state for the insight's actual
+    coordinates, swap in the correct one. This is what stops a title typed
+    or guessed at ingestion time from silently disagreeing with the real
+    location shown elsewhere on the card. Leaves the title untouched if it
+    names no state, or if geocoding didn't resolve one.
+    """
+    if not title or not state:
+        return title
+
+    for named_state in _INDIAN_STATES_AND_UTS:
+        if named_state.lower() in title.lower():
+            if named_state.lower() == state.lower():
+                return title  # already correct
+            # Replace the mismatched state name with the real one, preserving case/rest of title.
+            import re
+            pattern = re.compile(re.escape(named_state), re.IGNORECASE)
+            return pattern.sub(state, title, count=1)
+
+    return title
+
+
 def clean_text(text: str) -> str:
     """Basic cleaning: strip whitespace, remove empty lines."""
     lines = [line.strip() for line in text.splitlines() if line.strip()]

@@ -1,0 +1,147 @@
+From c5bd065e05d5f2470ddd46a95aa3efaf09e19774 Mon Sep 17 00:00:00 2001
+From: Soham <sohamroychoudhury08@gmail.com>
+Date: Thu, 30 Jul 2026 04:49:43 +0000
+Subject: [PATCH] Fix insight title/state mismatch: reconcile on create, allow
+ PATCH to fix existing records
+
+- ingestion.py: add reconcile_title_with_state() which detects an Indian
+  state/UT name inside a title and swaps it for the reverse-geocoded state
+  if they disagree (this is what caused cards like 'Assam Live Sensor
+  Monitoring' to show 'West Bengal' as the region underneath).
+- main.py: call the reconciler in all three insight-creation paths
+  (/insights/generate, /analyze, /analyze-location) so this can't happen
+  again going forward.
+- main.py + schemas.py: add PATCH /insights/{id} so existing bad titles
+  (already in the live DB) can be corrected directly, e.g.
+  PATCH /insights/<id> {"title": "West Bengal Live Sensor Monitoring"}
+---
+ backend/ingestion.py | 38 ++++++++++++++++++++++++++++++++++++++
+ backend/main.py      | 21 ++++++++++++++++++++-
+ backend/schemas.py   |  6 ++++++
+ 3 files changed, 64 insertions(+), 1 deletion(-)
+
+diff --git a/backend/ingestion.py b/backend/ingestion.py
+index 799ad45..36cc6c5 100644
+--- a/backend/ingestion.py
++++ b/backend/ingestion.py
+@@ -98,6 +98,44 @@ def reverse_geocode_safe(lat: float, lon: float, timeout: float = 10.0):
+         return None
+ 
+ 
++_INDIAN_STATES_AND_UTS = [
++    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
++    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
++    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya",
++    "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim",
++    "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand",
++    "West Bengal", "Andaman and Nicobar Islands", "Chandigarh",
++    "Dadra and Nagar Haveli and Daman and Diu", "Delhi", "Jammu and Kashmir",
++    "Ladakh", "Lakshadweep", "Puducherry",
++]
++# Longest names first so "Uttar Pradesh" doesn't get shadowed by "Uttarakhand"-style substrings.
++_INDIAN_STATES_AND_UTS.sort(key=len, reverse=True)
++
++
++def reconcile_title_with_state(title: str, state: str | None) -> str:
++    """
++    If a title names an Indian state/UT (e.g. "Assam Live Sensor Monitoring")
++    that doesn't match the reverse-geocoded state for the insight's actual
++    coordinates, swap in the correct one. This is what stops a title typed
++    or guessed at ingestion time from silently disagreeing with the real
++    location shown elsewhere on the card. Leaves the title untouched if it
++    names no state, or if geocoding didn't resolve one.
++    """
++    if not title or not state:
++        return title
++
++    for named_state in _INDIAN_STATES_AND_UTS:
++        if named_state.lower() in title.lower():
++            if named_state.lower() == state.lower():
++                return title  # already correct
++            # Replace the mismatched state name with the real one, preserving case/rest of title.
++            import re
++            pattern = re.compile(re.escape(named_state), re.IGNORECASE)
++            return pattern.sub(state, title, count=1)
++
++    return title
++
++
+ def clean_text(text: str) -> str:
+     """Basic cleaning: strip whitespace, remove empty lines."""
+     lines = [line.strip() for line in text.splitlines() if line.strip()]
+diff --git a/backend/main.py b/backend/main.py
+index 0cf3a50..3ed7154 100644
+--- a/backend/main.py
++++ b/backend/main.py
+@@ -74,6 +74,7 @@ def generate_insight(title: str, summary: str, source_ids: List[int], db: Sessio
+     scores = ingestion.score_sources(sources)
+     lat, lon = _first_location(sources)
+     town, district, state = _geocode_fields(lat, lon)
++    title = ingestion.reconcile_title_with_state(title, state)
+ 
+     insight = models.Insight(
+         source_id=sources[0].id,
+@@ -118,6 +119,22 @@ def get_insight(insight_id: int, db: Session = Depends(get_db)):
+     return insight
+ 
+ 
++@app.patch("/insights/{insight_id}", response_model=schemas.InsightOut)
++def update_insight(insight_id: int, update: schemas.InsightUpdate, db: Session = Depends(get_db)):
++    insight = db.query(models.Insight).filter(models.Insight.id == insight_id).first()
++    if not insight:
++        raise HTTPException(status_code=404, detail="Insight not found")
++
++    if update.title is not None:
++        insight.title = update.title
++    if update.summary is not None:
++        insight.summary = update.summary
++
++    db.commit()
++    db.refresh(insight)
++    return insight
++
++
+ @app.delete("/insights/{insight_id}")
+ def delete_insight(insight_id: int, db: Session = Depends(get_db)):
+     insight = db.query(models.Insight).filter(models.Insight.id == insight_id).first()
+@@ -207,10 +224,11 @@ def analyze(request: AnalyzeRequest, db: Session = Depends(get_db)):
+     scores = ingestion.score_sources(stored_sources)
+     lat, lon = _first_location(stored_sources)
+     town, district, state = _geocode_fields(lat, lon)
++    title = ingestion.reconcile_title_with_state(request.title, state)
+ 
+     insight = models.Insight(
+         source_id=stored_sources[0].id,
+-        title=request.title,
++        title=title,
+         summary=request.summary,
+         reliability_score=scores["reliability_score"],
+         consistency_score=scores["consistency_score"],
+@@ -288,6 +306,7 @@ def analyze_location(lat: float, lon: float, title: str, summary: str, db: Sessi
+ 
+     scores = ingestion.score_sources(stored_sources)
+     town, district, state = _geocode_fields(lat, lon)
++    title = ingestion.reconcile_title_with_state(title, state)
+ 
+     insight = models.Insight(
+         source_id=stored_sources[0].id,
+diff --git a/backend/schemas.py b/backend/schemas.py
+index 0a2f087..abc9558 100644
+--- a/backend/schemas.py
++++ b/backend/schemas.py
+@@ -42,6 +42,12 @@ class InsightOut(InsightCreate):
+         from_attributes = True
+ 
+ 
++class InsightUpdate(BaseModel):
++    """Partial update — only send the fields you want to change."""
++    title: Optional[str] = None
++    summary: Optional[str] = None
++
++
+ class AlertCreate(BaseModel):
+     insight_id: Optional[int] = None
+     message: str
+-- 
+2.43.0
+

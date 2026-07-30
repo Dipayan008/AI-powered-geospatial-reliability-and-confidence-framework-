@@ -74,6 +74,7 @@ def generate_insight(title: str, summary: str, source_ids: List[int], db: Sessio
     scores = ingestion.score_sources(sources)
     lat, lon = _first_location(sources)
     town, district, state = _geocode_fields(lat, lon)
+    title = ingestion.reconcile_title_with_state(title, state)
 
     insight = models.Insight(
         source_id=sources[0].id,
@@ -115,6 +116,22 @@ def get_insight(insight_id: int, db: Session = Depends(get_db)):
     insight = db.query(models.Insight).filter(models.Insight.id == insight_id).first()
     if not insight:
         raise HTTPException(status_code=404, detail="Insight not found")
+    return insight
+
+
+@app.patch("/insights/{insight_id}", response_model=schemas.InsightOut)
+def update_insight(insight_id: int, update: schemas.InsightUpdate, db: Session = Depends(get_db)):
+    insight = db.query(models.Insight).filter(models.Insight.id == insight_id).first()
+    if not insight:
+        raise HTTPException(status_code=404, detail="Insight not found")
+
+    if update.title is not None:
+        insight.title = update.title
+    if update.summary is not None:
+        insight.summary = update.summary
+
+    db.commit()
+    db.refresh(insight)
     return insight
 
 
@@ -207,10 +224,11 @@ def analyze(request: AnalyzeRequest, db: Session = Depends(get_db)):
     scores = ingestion.score_sources(stored_sources)
     lat, lon = _first_location(stored_sources)
     town, district, state = _geocode_fields(lat, lon)
+    title = ingestion.reconcile_title_with_state(request.title, state)
 
     insight = models.Insight(
         source_id=stored_sources[0].id,
-        title=request.title,
+        title=title,
         summary=request.summary,
         reliability_score=scores["reliability_score"],
         consistency_score=scores["consistency_score"],
@@ -288,6 +306,7 @@ def analyze_location(lat: float, lon: float, title: str, summary: str, db: Sessi
 
     scores = ingestion.score_sources(stored_sources)
     town, district, state = _geocode_fields(lat, lon)
+    title = ingestion.reconcile_title_with_state(title, state)
 
     insight = models.Insight(
         source_id=stored_sources[0].id,

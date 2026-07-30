@@ -42,6 +42,12 @@ class InsightOut(InsightCreate):
         from_attributes = True
 
 
+class InsightUpdate(BaseModel):
+    """Partial update — only send the fields you want to change."""
+    title: Optional[str] = None
+    summary: Optional[str] = None
+
+
 class AlertCreate(BaseModel):
     insight_id: Optional[int] = None
     message: str
