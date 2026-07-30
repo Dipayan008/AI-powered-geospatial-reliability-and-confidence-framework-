@@ -18,7 +18,19 @@ export const Header: React.FC<HeaderProps> = ({
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      setTimeStr(now.toISOString().replace('T', ' ').substring(0, 19) + ' IST');
+      // toISOString() is always UTC — the label said "IST" but the value
+      // wasn't actually offset, so it ran 5.5 hours behind real IST.
+      // Format directly in Asia/Kolkata instead of hand-rolling the offset.
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+        hour12: false,
+      }).formatToParts(now);
+      const get = (type: string) => parts.find((p) => p.type === type)?.value ?? '';
+      setTimeStr(
+        `${get('year')}-${get('month')}-${get('day')} ${get('hour')}:${get('minute')}:${get('second')} IST`
+      );
     };
     updateTime();
     const timer = setInterval(updateTime, 1000);
