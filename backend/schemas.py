@@ -46,6 +46,9 @@ class InsightUpdate(BaseModel):
     """Partial update — only send the fields you want to change."""
     title: Optional[str] = None
     summary: Optional[str] = None
+    town_village: Optional[str] = None
+    district: Optional[str] = None
+    state: Optional[str] = None
 
 
 class AlertCreate(BaseModel):

@@ -129,6 +129,41 @@ def update_insight(insight_id: int, update: schemas.InsightUpdate, db: Session =
         insight.title = update.title
     if update.summary is not None:
         insight.summary = update.summary
+    if update.town_village is not None:
+        insight.town_village = update.town_village
+    if update.district is not None:
+        insight.district = update.district
+    if update.state is not None:
+        insight.state = update.state
+
+    db.commit()
+    db.refresh(insight)
+    return insight
+
+
+@app.post("/insights/{insight_id}/regeocode", response_model=schemas.InsightOut)
+def regeocode_insight(insight_id: int, db: Session = Depends(get_db)):
+    """
+    Retries reverse-geocoding for an insight whose town/district/state came
+    back empty at creation time (e.g. Nominatim was rate-limited or timed
+    out). Uses the insight's already-stored lat/lon, so no new data source
+    is needed. Also re-runs title reconciliation in case the title names a
+    state that disagrees with the newly-resolved one.
+    """
+    insight = db.query(models.Insight).filter(models.Insight.id == insight_id).first()
+    if not insight:
+        raise HTTPException(status_code=404, detail="Insight not found")
+    if insight.latitude is None or insight.longitude is None:
+        raise HTTPException(status_code=400, detail="Insight has no stored coordinates to geocode")
+
+    town, district, state = _geocode_fields(insight.latitude, insight.longitude)
+    if not any([town, district, state]):
+        raise HTTPException(status_code=503, detail="Reverse-geocoding still unavailable, try again shortly")
+
+    insight.town_village = town
+    insight.district = district
+    insight.state = state
+    insight.title = ingestion.reconcile_title_with_state(insight.title, state)
 
     db.commit()
     db.refresh(insight)

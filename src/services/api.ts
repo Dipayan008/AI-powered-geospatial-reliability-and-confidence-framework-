@@ -330,7 +330,7 @@ export interface BackendInsight {
 }
 function inferDisasterType(title: string): HazardZone['disasterType'] {
   const t = title.toLowerCase();
-  if (t.includes('earthquake')) return 'Micro-Seismic';
+  if (t.includes('earthquake') || t.includes('seismic') || t.includes('tremor') || t.includes('quake')) return 'Micro-Seismic';
   if (t.includes('landslide')) return 'Landslide';
   if (t.includes('flood')) return 'Flash Flood';
   if (t.includes('cyclone')) return 'Cyclone Surge';
