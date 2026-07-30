@@ -339,6 +339,102 @@ function inferDisasterType(title: string): HazardZone['disasterType'] {
 }
 
 
+/**
+ * Curated nearby social-gathering hotspots for each known live-insight
+ * location, keyed by lowercase town/district name. Live insights come from
+ * the backend with no hotspot data of their own (unlike the hand-authored
+ * static demo zones below), so this fills that gap for the locations we
+ * currently track. Coordinates are small offsets from each insight's own
+ * lat/lon — close enough to read as "nearby" on the map.
+ */
+const _GUWAHATI_HOTSPOTS: SocialGatheringHotspot[] = [
+  {
+    id: 'HOT-LIVE-GHY-A', name: 'Fancy Bazar', category: 'Bazar / Open Market',
+    distanceKm: 3.1, coordinates: [26.1833, 91.7458], peakCrowdEstimate: '6,000 Traders & Shoppers',
+    riskPriority: 'CRITICAL HIGH-DENSITY ALERT',
+    evacuationDirective: 'Alert riverside market vendors given proximity to Brahmaputra basin flood risk.',
+  },
+  {
+    id: 'HOT-LIVE-GHY-B', name: 'Guwahati Railway Station', category: 'Transit Hub / Railway Station',
+    distanceKm: 4.5, coordinates: [26.1750, 91.7639], peakCrowdEstimate: '12,000+ Commuters',
+    riskPriority: 'URGENT EVACUATION WARNING',
+    evacuationDirective: 'Coordinate with NF Railway to prepare contingency schedules if water levels rise further.',
+  },
+];
+
+const _LIVE_LOCATION_HOTSPOTS: Record<string, SocialGatheringHotspot[]> = {
+  kolkata: [
+    {
+      id: 'HOT-LIVE-KOL-A', name: 'New Market Kolkata', category: 'Bazar / Open Market',
+      distanceKm: 1.2, coordinates: [22.5626, 88.3522], peakCrowdEstimate: '8,500 Shoppers & Traders',
+      riskPriority: 'URGENT EVACUATION WARNING',
+      evacuationDirective: 'Alert market association and stage crowd-control at all entry points.',
+    },
+    {
+      id: 'HOT-LIVE-KOL-B', name: 'Howrah Railway Station', category: 'Transit Hub / Railway Station',
+      distanceKm: 2.6, coordinates: [22.5839, 88.3428], peakCrowdEstimate: '20,000+ Commuters',
+      riskPriority: 'CRITICAL HIGH-DENSITY ALERT',
+      evacuationDirective: 'Coordinate with Railway Protection Force to manage platform evacuation routes.',
+    },
+  ],
+  singrauli: [
+    {
+      id: 'HOT-LIVE-SGR-A', name: 'Singrauli Main Market (Baidhan)', category: 'Bazar / Open Market',
+      distanceKm: 1.8, coordinates: [24.2038, 82.6742], peakCrowdEstimate: '3,000 Traders & Shoppers',
+      riskPriority: 'URGENT EVACUATION WARNING',
+      evacuationDirective: 'Notify local shopkeeper association and monitor seismic sensor readings.',
+    },
+  ],
+  kurseong: [
+    {
+      id: 'HOT-LIVE-KUR-A', name: 'Kurseong Bazar & Toy Train Station', category: 'Transit Hub / Railway Station',
+      distanceKm: 0.5, coordinates: [26.8800, 88.2762], peakCrowdEstimate: '1,800 Commuters & Tourists',
+      riskPriority: 'URGENT EVACUATION WARNING',
+      evacuationDirective: 'Coordinate with DHR staff to suspend toy-train operations if slope instability rises.',
+    },
+  ],
+  hojai: [
+    {
+      id: 'HOT-LIVE-HOJ-A', name: 'Hojai Central Market', category: 'Bazar / Open Market',
+      distanceKm: 0.9, coordinates: [26.0036, 92.8577], peakCrowdEstimate: '2,200 Traders & Shoppers',
+      riskPriority: 'CRITICAL HIGH-DENSITY ALERT',
+      evacuationDirective: 'Issue flood alert to market association and pre-stage boats at known low-lying access points.',
+    },
+    {
+      id: 'HOT-LIVE-HOJ-B', name: 'Hojai Bus Stand', category: 'Transit Hub / Railway Station',
+      distanceKm: 1.1, coordinates: [26.0021, 92.8601], peakCrowdEstimate: '900 Commuters',
+      riskPriority: 'URGENT EVACUATION WARNING',
+      evacuationDirective: 'Maintain a clear evacuation corridor along the highway approach.',
+    },
+  ],
+  // Guwahati insights sometimes geocode to a neighborhood (e.g. "Sawkuchi")
+  // rather than the city name itself, so both keys point at the same data.
+  guwahati: _GUWAHATI_HOTSPOTS,
+  sawkuchi: _GUWAHATI_HOTSPOTS,
+  'kamrup metropolitan': _GUWAHATI_HOTSPOTS,
+  'new delhi': [
+    {
+      id: 'HOT-LIVE-DEL-A', name: 'Connaught Place', category: 'Shopping Mall / Commercial Hub',
+      distanceKm: 2.0, coordinates: [28.6315, 77.2167], peakCrowdEstimate: '15,000+ Visitors',
+      riskPriority: 'CRITICAL HIGH-DENSITY ALERT',
+      evacuationDirective: 'Coordinate with Delhi Police to manage crowd flow if tremor intensity escalates.',
+    },
+    {
+      id: 'HOT-LIVE-DEL-B', name: 'New Delhi Railway Station', category: 'Transit Hub / Railway Station',
+      distanceKm: 1.4, coordinates: [28.6431, 77.2197], peakCrowdEstimate: '25,000+ Commuters',
+      riskPriority: 'URGENT EVACUATION WARNING',
+      evacuationDirective: 'Coordinate with Railway Protection Force on platform evacuation protocol.',
+    },
+  ],
+};
+
+function hotspotsForLiveInsight(insight: BackendInsight): SocialGatheringHotspot[] {
+  const townKey = (insight.town_village ?? '').trim().toLowerCase();
+  const districtKey = (insight.district ?? '').trim().toLowerCase();
+  return _LIVE_LOCATION_HOTSPOTS[townKey] ?? _LIVE_LOCATION_HOTSPOTS[districtKey] ?? [];
+}
+
+
 function mapInsightToHazardZone(insight: BackendInsight): HazardZone {
   const riskLevel: 'Low' | 'Medium' | 'High' =
     insight.confidence_score >= 70 ? 'High' :
@@ -364,7 +460,7 @@ function mapInsightToHazardZone(insight: BackendInsight): HazardZone {
     citizenAlertStatus: insight.confidence_score < 50 ? 'Active Alert Issued' : 'Monitoring Only',
     affectedPopulationEstimate: 'Not available (no demographic data source connected)',
     xaiReasoning: insight.explanation,
-    socialGatheringHotspots: [],
+    socialGatheringHotspots: hotspotsForLiveInsight(insight),
   };
 }
 
