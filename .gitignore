@@ -31,3 +31,9 @@ __pycache__/
 backend/geoai.db
 .env
 server*.log
+
+# Local scratch / debug artifacts (recovery scripts, patches, temp dumps)
+*_recovered*.db
+*_recovered*.bin
+*.patch
+check_db.py
