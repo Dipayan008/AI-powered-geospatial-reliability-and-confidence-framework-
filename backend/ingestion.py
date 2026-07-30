@@ -59,6 +59,21 @@ def fetch_live_sentinel_safe(lat: float, lon: float):
     return fetch_sentinel_observation_safe(lat, lon)
 
 
+_ISO_3166_2_IN_TO_STATE = {
+    "IN-AN": "Andaman and Nicobar Islands", "IN-AP": "Andhra Pradesh",
+    "IN-AR": "Arunachal Pradesh", "IN-AS": "Assam", "IN-BR": "Bihar",
+    "IN-CH": "Chandigarh", "IN-CT": "Chhattisgarh", "IN-DN": "Dadra and Nagar Haveli and Daman and Diu",
+    "IN-DL": "Delhi", "IN-GA": "Goa", "IN-GJ": "Gujarat", "IN-HR": "Haryana",
+    "IN-HP": "Himachal Pradesh", "IN-JK": "Jammu and Kashmir", "IN-JH": "Jharkhand",
+    "IN-KA": "Karnataka", "IN-KL": "Kerala", "IN-LA": "Ladakh", "IN-LD": "Lakshadweep",
+    "IN-MP": "Madhya Pradesh", "IN-MH": "Maharashtra", "IN-MN": "Manipur",
+    "IN-ML": "Meghalaya", "IN-MZ": "Mizoram", "IN-NL": "Nagaland", "IN-OR": "Odisha",
+    "IN-PY": "Puducherry", "IN-PB": "Punjab", "IN-RJ": "Rajasthan", "IN-SK": "Sikkim",
+    "IN-TN": "Tamil Nadu", "IN-TG": "Telangana", "IN-TR": "Tripura",
+    "IN-UP": "Uttar Pradesh", "IN-UT": "Uttarakhand", "IN-WB": "West Bengal",
+}
+
+
 def reverse_geocode_safe(lat: float, lon: float, timeout: float = 10.0):
     """
     Reverse-geocodes a lat/lon into town/district/state names using
@@ -69,7 +84,7 @@ def reverse_geocode_safe(lat: float, lon: float, timeout: float = 10.0):
     try:
         response = requests.get(
             "https://nominatim.openstreetmap.org/reverse",
-            params={"lat": lat, "lon": lon, "format": "json"},
+            params={"lat": lat, "lon": lon, "format": "json", "addressdetails": 1},
             headers={"User-Agent": "PS07-GeoAI-Hackathon-Project"},
             timeout=timeout,
         )
@@ -85,6 +100,13 @@ def reverse_geocode_safe(lat: float, lon: float, timeout: float = 10.0):
         )
         district = address.get("state_district") or address.get("county")
         state = address.get("state")
+        if not state:
+            # Some Indian union territories (Delhi, Chandigarh, Puducherry...) don't
+            # carry a plain "state" tag in OSM data — fall back to the ISO code,
+            # which Nominatim does include, rather than leaving state blank.
+            iso_code = address.get("ISO3166-2-lvl4")
+            if iso_code:
+                state = _ISO_3166_2_IN_TO_STATE.get(iso_code)
 
         if not any([town, district, state]):
             return None
